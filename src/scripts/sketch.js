@@ -59,8 +59,8 @@ export default class Sketch {
 
     app.setUpdateCallback(dT => {
       const time = app.clock.getElapsedTime();
-      mesh.rotateX(Math.cos(Math.PI * time * dT) / 100);
-      mesh.rotateZ(Math.cos(Math.PI * time * dT) / 300);
+      mesh.rotation.x = ((time % 20) / 20) * (Math.PI * 2);
+      mesh.rotation.z = ((time % 30) / 30) * (Math.PI * 2);
       shader.uniforms["time"].value = time;
       shader.uniforms["scroll"].value = window.scrollY;
       shader.uniforms["alpha"].value = settings.ui.alpha.value;
