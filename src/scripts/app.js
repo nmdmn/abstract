@@ -1,6 +1,9 @@
 import * as Dat from "dat.gui";
 import * as Three from "three";
-import {OrbitControls} from "three/examples/jsm/Addons.js";
+import {OrbitControls, OutputPass} from "three/examples/jsm/Addons.js";
+import {EffectComposer} from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass.js';
+import {UnrealBloomPass} from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
 export class App {
   constructor(canvas, camera) {
@@ -12,18 +15,29 @@ export class App {
       canvas : this.canvas,
       antialias : true,
     });
-    this.renderer.toneMapping = Three.ACESFilmicToneMapping;
+    //this.renderer.toneMapping = Three.ACESFilmicToneMapping;
+    //this.renderer.toneMapping = Three.ReinhardToneMapping;
+    //this.renderer.toneMappingExposure = Math.pow(1, 4);
     this.renderer.outputColorSpace = Three.SRGBColorSpace;
     this.renderer.setClearColor(0x000000);
 
-    this.onResize();
-    window.addEventListener('resize', () => { this.onResize(); }, false);
-    window.addEventListener('keydown', event => { this.onKey(event); });
+    this.renderPass = new RenderPass(this.scene, this.camera);
+    this.outputPass = new OutputPass();
+    this.bloomPass = new UnrealBloomPass(new Three.Vector2(window.innerWidth, window.innerHeight), 1.5, .4, .85);
+    this.composer = new EffectComposer(this.renderer);
+    this.composer.addPass(this.renderPass);
+    //this.composer.addPass(this.bloomPass);
+    //this.composer.addPass(this.outputPass);
 
     this.clock = new Three.Clock();
     this.resizeCallbacks = [];
     this.keydownCallbacks = [];
     this.updateCallbacks = [];
+
+    window.addEventListener('resize', () => { this.onResize(); }, false);
+    window.addEventListener('keydown', event => { this.onKey(event); });
+    this.onResize();
+
   }
 
   addResizeCallback(resizeCallback) { this.resizeCallbacks.push(resizeCallback); }
@@ -51,7 +65,8 @@ export class App {
       this.updateCallbacks[callback](this.clock.getDelta(), this.clock.getElapsedTime());
     }
 
-    this.renderer.render(this.scene, this.camera);
+    //this.renderer.render(this.scene, this.camera);
+    this.composer.render();
     window.requestAnimationFrame(this.tick.bind(this));
   }
 
