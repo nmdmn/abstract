@@ -1,7 +1,9 @@
 attribute float noise;
 
 uniform float time;
+uniform float deltaTime;
 uniform float scroll;
+uniform float alpha;
 
 void main() {
   vec4 worldPosition = modelViewMatrix * vec4(position, 1.);

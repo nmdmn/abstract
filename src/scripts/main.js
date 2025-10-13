@@ -1,9 +1,7 @@
 import Sketch from "./sketch.js";
 
 function main() {
-  new Sketch({
-    querySelect : "canvas",
-  });
+  new Sketch("canvas");
 }
 
 document.addEventListener("DOMContentLoaded", main);
