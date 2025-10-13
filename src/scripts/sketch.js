@@ -1,76 +1,65 @@
-import {Tween, Group, Easing} from "@tweenjs/tween.js";
+import * as Dat from "dat.gui";
 import {createNoise3D} from "simplex-noise";
 import * as Three from "three";
-import {Euler, Vector3} from "three";
+import {Vector3} from "three";
 
-import {App, BufferObject} from "./app.js";
+import {App, UI, BufferObject} from "./app.js";
 import FragmentShader from "./shaders/fDefault.glsl";
 import VertexShader from "./shaders/vDefault.glsl";
 
+const ui = {
+  alpha : {
+    value : .33,
+    min : .0,
+    max : 1.,
+    step : .01,
+  },
+};
+
 export default class Sketch {
-  constructor(args) {
-    const settings = {
-      camera : {
-        fov : 63.,
-        nearZ : .1,
-        farZ : 1000.,
-        rotation : new Euler(0., 0., 0.),
-        position : new Vector3(1., 1., 1.), //NOTE immediately rewritten by TWEEN
-      },
-      ui : {
-        alpha : {
-          value : .33,
-          min : .0,
-          max : 1.,
-          step : .01,
-        }
-      },
-    };
+  constructor(canvas) {
+    this.gui = new UI(ui);
 
-    const app = new App(args, settings);
-    const shader = this.initShader(app, settings);
-    const geometry = this.initGeometry(5, 4);
+    this.camera = new Three.PerspectiveCamera(33, window.innerWidth / window.innerHeight, .1, 1000.);
+    this.camera.lookAt(new Vector3(0, 0, 0));
+    this.camera.position.copy(new Vector3(99, 99, 99));
+    this.app = new App(canvas, this.camera);
 
-    const mesh = new Three.Points(geometry, shader);
-    app.scene.add(mesh);
+    this.dottedBox = new DottedBoxModel(this.app);
 
-//    const light = new Three.HemisphereLight(0xffffbb, 0x080820, 1);
-//    app.scene.add(light);
-
-    const from_choord = {x : 100, y : 100, z : 100};
-    const to_choord = {x : 33, y : 33, z : 33};
-
-    const coords1 = from_choord;
-    const tween1 = new Tween(coords1)
-      .to(to_choord, 3000)
-      .easing(Easing.Quadratic.InOut) // NOTE https://sole.github.io/tween.js/examples/03_graphs.html
-      .onUpdate(() => app.camera.position.set(coords1.x, coords1.y, coords1.z))
-      .start();
-    
-    const coords2 = to_choord;
-    const tween2 = new Tween(coords2)
-      .to(from_choord, 3000)
-      .easing(Easing.Quadratic.InOut) // NOTE https://sole.github.io/tween.js/examples/03_graphs.html
-      .onUpdate(() => app.camera.position.set(coords2.x, coords2.y, coords2.z))
-      .start(6000);
-
-    const tweenGroup = new Group();
-    tweenGroup.add(tween1, tween2);
-
-    app.setUpdateCallback(dT => {
-      const time = app.clock.getElapsedTime();
-      mesh.rotation.x = ((time % 20) / 20) * (Math.PI * 2);
-      mesh.rotation.z = ((time % 30) / 30) * (Math.PI * 2);
-      shader.uniforms["time"].value = time;
-      shader.uniforms["scroll"].value = window.scrollY;
-      shader.uniforms["alpha"].value = settings.ui.alpha.value;
-      tweenGroup.update();
+    this.app.addKeydownCallbacks((event) => {
+      switch (event.key) {
+        case "Escape":
+          Dat.GUI.toggleHide();
+          break;
+      }
     });
 
-    app.start();
+    this.app.start();
   }
 
-  initShader(app, settings) {
+}
+
+class DottedBoxModel {
+  constructor(app) {
+    this.app = app;
+    this.shader = this.initShader();
+    this.geometry = this.initGeometry(5, 4);
+
+    this.mesh = new Three.Points(this.geometry, this.shader);
+    this.app.scene.add(this.mesh);
+
+    this.app.addUpdateCallback((deltaTime, time) => {
+      this.mesh.rotation.x = ((time % 20) / 20) * (Math.PI * 2);
+      this.mesh.rotation.z = ((time % 30) / 30) * (Math.PI * 2);
+      this.shader.uniforms["time"].value = time;
+      this.shader.uniforms["deltaTime"].value = deltaTime;
+      this.shader.uniforms["scroll"].value = window.scrollY;
+      this.shader.uniforms["alpha"].value = ui.alpha.value;
+    });
+  }
+
+  initShader() {
     return new Three.ShaderMaterial({
       side : Three.DoubleSide,
       clipping : true,
@@ -86,9 +75,10 @@ export default class Sketch {
         // shaderTextureLOD : false,
       },
       uniforms : {
-        time : {type : "f", value : app.clock.getElapsedTime()},
+        time : {type : "f", value : this.app.clock.getElapsedTime()},
+        deltaTime : {type : "f", value : this.app.clock.deltaTime},
         scroll : {type : "f", value : window.scrollY},
-        alpha : {type : "f", value : settings.ui.alpha.value},
+        alpha : {type : "f", value : ui.alpha.value},
       },
       vertexShader : VertexShader,
       fragmentShader : FragmentShader,

@@ -1,6 +1,7 @@
 attribute float noise;
 
 uniform float time;
+uniform float deltaTime;
 uniform float scroll;
 
 void main() {
