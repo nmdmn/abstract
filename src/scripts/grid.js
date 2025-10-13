@@ -8,7 +8,7 @@ export class Grid {
     this.app = app;
     this.ui = ui;
     this.shader = this.initShader();
-    this.geometry = this.initGeometry(100, 200);
+    this.geometry = this.initGeometry(200, 400);
 
     this.mesh = new Three.Points(this.geometry, this.shader);
     this.app.scene.add(this.mesh);
@@ -27,7 +27,7 @@ export class Grid {
       blending : Three.AdditiveBlending,
       clipping : false,
       fog : false,
-      wireframe : false,
+      wireframe : true,
       transparent : true,
       depthTest : false,
       depthWrite : false,

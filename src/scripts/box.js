@@ -9,7 +9,7 @@ export class Box {
     this.app = app;
     this.ui = ui;
     this.shader = this.initShader();
-    this.geometry = this.initGeometry(5, 4);
+    this.geometry = this.initGeometry(10, 12);
 
     this.mesh = new Three.Points(this.geometry, this.shader);
     this.app.scene.add(this.mesh);

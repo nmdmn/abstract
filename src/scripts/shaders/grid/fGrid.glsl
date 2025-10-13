@@ -8,7 +8,7 @@ varying float vNoise;
 varying vec3 vPos;
 
 vec3 coldColor = vec3(.125, .125, .125);
-vec3 hotColor = vec3(.75, .75, .75);
+vec3 hotColor = vec3(.55, .55, .55);
 
 float map(float value, float min1, float max1, float min2, float max2) {
   return min2 + (value - min1) * (max2 - min2) / (max1 - min1);
