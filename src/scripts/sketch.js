@@ -4,6 +4,7 @@ import {Vector3} from "three";
 
 import {App, UI} from "./app.js";
 import {Box} from "./box";
+import {Grid} from "./grid.js";
 
 const ui = {
   alpha : {
@@ -20,10 +21,11 @@ export default class Sketch {
 
     this.camera = new Three.PerspectiveCamera(33, window.innerWidth / window.innerHeight, .1, 1000.);
     this.camera.lookAt(new Vector3(0, 0, 0));
-    this.camera.position.copy(new Vector3(99, 99, 99));
+    this.camera.position.copy(new Vector3(0, 0, 99));
     this.app = new App(canvas, this.camera);
 
     this.box = new Box(this.app, ui);
+    this.grid = new Grid(this.app, ui);
 
     this.app.addKeydownCallbacks((event) => {
       switch (event.key) {

@@ -1,7 +1,7 @@
 import * as Three from "three";
 import {createNoise3D} from "simplex-noise";
-import FragmentShader from "./shaders/fDefault.glsl";
-import VertexShader from "./shaders/vDefault.glsl";
+import FragmentShader from "./shaders/box/fBox.glsl";
+import VertexShader from "./shaders/box/vBox.glsl";
 import {BufferObject} from "./app.js"
 
 export class Box {
@@ -27,17 +27,18 @@ export class Box {
   initShader() {
     return new Three.ShaderMaterial({
       side : Three.DoubleSide,
+      blending : Three.AdditiveBlending,
       clipping : true,
       fog : false,
       wireframe : false,
-      blending : Three.AdditiveBlending,
       transparent : true,
+      depthTest : false,
       depthWrite : false,
       extensions : {
         derivates : "#extensions GL_OES_standard_derivates : enable",
-        // fragDepth : false,
-        // drawBuffers : true,
-        // shaderTextureLOD : false,
+        //fragDepth : false,
+        //drawBuffers : true,
+        //haderTextureLOD : false,
       },
       uniforms : {
         time : {type : "f", value : this.app.clock.getElapsedTime()},
