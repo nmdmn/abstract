@@ -1,0 +1,18 @@
+@use "sass:math";
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Roboto:wght@300;400;700;900&display=swap');
+
+$fontFamily: Montserrat;
+
+@mixin setHeaderFontSizes($from, $to) {
+  $headerCount: 6;
+  $step: math.round(calc(($from - $to) / $headerCount));
+
+  @for $i from 0 to $headerCount {
+    h#{$i+1} {
+      font: {
+        size: $from - $i * $step;
+      }
+    }
+  }
+}
