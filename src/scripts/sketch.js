@@ -45,7 +45,7 @@ export default class Sketch {
 
     this.camera = new Three.PerspectiveCamera(33, window.innerWidth / window.innerHeight, .1, 1000.);
     this.camera.lookAt(new Vector3(0, 0, 0));
-    this.camera.position.copy(new Vector3(0, 0, 46));
+    this.camera.position.copy(new Vector3(0, 0, 56));
     this.app = new App(canvas, this.camera);
 
     this.box = new Box(this.app, ui);
