@@ -52,6 +52,23 @@ export default class Sketch {
     this.grid = new Grid(this.app, ui);
     this.grid.mesh.position.copy(new Vector3(0, 0, -10));
 
+    document.querySelector("main").addEventListener("scrollsnapchanging", (event) => {
+      switch (event.snapTargetBlock.id) {
+        case "section-0":
+          console.log("section 0");
+          break;
+        case "section-1":
+          console.log("section 1");
+          break;
+        case "section-2":
+          console.log("section 2");
+          break;
+        case "section-3":
+          console.log("section 3");
+          break;
+      }
+    });
+
     this.app.addKeydownCallbacks((event) => {
       switch (event.key) {
         case "Escape":
