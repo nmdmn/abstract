@@ -27,7 +27,7 @@ export class Grid {
       blending : Three.AdditiveBlending,
       clipping : false,
       fog : false,
-      wireframe : false,
+      wireframe : true,
       transparent : true,
       depthTest : false,
       depthWrite : false,
@@ -56,7 +56,7 @@ export class Grid {
     const sampler = new createNoise3D();
     sampler.perlin_octaves = 8;
     for (let i = 0; i < posArrayLen; i += 3) {
-      const scale = 3.5;
+      const scale = .3;
       const noise =
           sampler(geometry.attributes.position.array[i] * scale,
                 geometry.attributes.position.array[i + 1] * scale,

@@ -14,9 +14,9 @@ float map(float value, float min1, float max1, float min2, float max2) {
 }
 
 void main() {
-  float animOffset = time + (1. / noise) * 1.;
-  float theta = animOffset / 3.;
-  float phi = animOffset / 12.;
+  float animOffset = time + (1. / noise) * .1;
+  float theta = animOffset / 4.;
+  float phi = animOffset / 6.;
   float x = smoothstep(-.06, .06, sin(theta) * cos(phi));
   float y = smoothstep(-.13, .13, sin(theta) * sin(phi));
   float z = smoothstep(-.33, .33, cos(theta));
