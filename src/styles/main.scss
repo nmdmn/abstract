@@ -6,7 +6,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  scroll-behavior: auto;
+  scroll-behavior: smooth;
   font: {
     family: utils.$fontFamily;
     weight: utils.$fontWeight;
@@ -35,7 +35,7 @@ main {
 }
 
 section {
-  scroll-snap-align: start;
+  scroll-snap-align: center;
   gap: utils.$headerHeight;
   display: flex;
   align-items: center;

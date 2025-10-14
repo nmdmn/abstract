@@ -88,7 +88,7 @@ export default class Sketch {
         radius: {value : .9}},
         500)
       .easing(Easing.Exponential.InOut);
-    
+
     const animations = new Group();
     animations.add(animCamOut);
     animations.add(animCamIn);
@@ -98,7 +98,7 @@ export default class Sketch {
     animations.add(animExposureStrengthen);
     animations.add(animExposureWeaken);
 
-    document.querySelector("main").addEventListener("scrollsnapchanging", (event) => {
+    document.querySelector("main").addEventListener("scrollsnapchanging", event => {
       switch (event.snapTargetBlock.id) {
         case "section-0":
           animCamIn.startFromCurrentValues();
@@ -117,7 +117,6 @@ export default class Sketch {
           animExposureWeaken.startFromCurrentValues();
           break;
       }
-      console.log(animations);
     });
 
     this.app.addKeydownCallbacks((event) => {
