@@ -1,6 +1,6 @@
 @use "utils";
 
-@include utils.setHeaderFontSizes(36px, 20px);
+//@include utils.setHeaderFontSizes(36px, 20px);
 
 * {
   margin: 0;
@@ -9,16 +9,29 @@
   scroll-behavior: smooth;
   font: {
     family: utils.$fontFamily;
+    weight: utils.$fontWeight;
+    style: utils.$fontStyle;
   }
+  color: white;
 }
 
 canvas {
+  z-index: -1;
   position: fixed;
   top: 0;
   left: 0;
+}
+
+header {
+  position: fixed;
+  height: 100px;
+}
+
+section {
+  padding-top: 100px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   width: 100%;
-  height: 100%;
-  border: 0;
-  overflow: hidden;
-  display: block;
+  height: 100vh;
 }

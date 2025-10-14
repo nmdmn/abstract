@@ -60,6 +60,12 @@ export default class Sketch {
       }
     });
 
+    this.app.addScrollCallback(() => {
+      const distance = document.body.getBoundingClientRect().top;
+      this.camera.position.z = distance * -0.01 + 46;
+    });
+    this.app.onScroll();
+
     this.app.addUpdateCallback(() => {
       this.app.renderer.toneMappingExposure = Math.pow(ui.exposure.value, 4);
       this.app.bloomPass.threshold = ui.threshold.value;

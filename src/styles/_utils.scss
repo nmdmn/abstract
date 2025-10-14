@@ -3,6 +3,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Roboto:wght@300;400;700;900&display=swap');
 
 $fontFamily: Montserrat;
+$fontWeight: 400;
+$fontStyle: normal;
+$darkBg: rgba(15, 15, 15, 0.95);
+$spacing: 350px;
 
 @mixin setHeaderFontSizes($from, $to) {
   $headerCount: 6;

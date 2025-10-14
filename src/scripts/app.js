@@ -9,9 +9,6 @@ import {FXAAPass} from 'three/examples/jsm/postprocessing/FXAAPass.js';
 
 export class App {
   constructor(canvas, camera) {
-    window.addEventListener('resize', () => { this.onResize(); }, false);
-    window.addEventListener('keydown', event => { this.onKey(event); });
-
     this.canvas = document.querySelector(canvas);
     this.camera = camera;
     this.cameraControl = new OrbitControls(this.camera, this.canvas);
@@ -42,11 +39,17 @@ export class App {
     this.clock = new Three.Clock();
     this.resizeCallbacks = [];
     this.keydownCallbacks = [];
+    this.scrollCallbacks =[];
     this.updateCallbacks = [];
+
+    window.addEventListener("resize", () => { this.onResize(); }, false);
+    window.addEventListener("keydown", event => { this.onKey(event); });
+    document.addEventListener("scroll", () => {this.onScroll();});
   }
 
   addResizeCallback(resizeCallback) { this.resizeCallbacks.push(resizeCallback); }
   addKeydownCallbacks(keydownCallback) { this.keydownCallbacks.push(keydownCallback); }
+  addScrollCallback(scrollCallback) {this.scrollCallbacks.push(scrollCallback)};
   addUpdateCallback(updateCallback) { this.updateCallbacks.push(updateCallback); }
 
   onResize() {
@@ -64,6 +67,12 @@ export class App {
   onKey(event) {
     for (const callback in this.keydownCallbacks) {
       this.keydownCallbacks[callback](event);
+    }
+  }
+
+  onScroll() {
+    for (const callback in this.scrollCallbacks) {
+      this.scrollCallbacks[callback]();
     }
   }
 
