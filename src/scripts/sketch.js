@@ -68,6 +68,26 @@ export default class Sketch {
     const animCamBottom = new Tween(this.camera.position)
       .to(new Vector3(0, 10, 99), 500)
       .easing(Easing.Sinusoidal.InOut);
+
+    const animExposureStrengthen = new Tween(ui)
+      .to({
+        aplha: {value: .7},
+        exposure: {value: 1.2},
+        threshold : {value: .2},
+        strength : {value: .5},
+        radius : {value: 1}},
+        500)
+      .easing(Easing.Bounce.InOut)
+      .start();
+    const animExposureWeaken = new Tween(ui)
+      .to({
+        alpha: {value: 1},
+        exposure: {value: .8},
+        threshold : {value: .6},
+        strength : {value: .6},
+        radius: {value : .9}},
+        500)
+      .easing(Easing.Bounce.InOut);
     
     const animations = new Group();
     animations.add(animCamOut);
@@ -75,19 +95,26 @@ export default class Sketch {
     animations.add(animCamLeft);
     animations.add(animCamBottom);
 
+    animations.add(animExposureStrengthen);
+    animations.add(animExposureWeaken);
+
     document.querySelector("main").addEventListener("scrollsnapchanging", (event) => {
       switch (event.snapTargetBlock.id) {
         case "section-0":
           animCamIn.startFromCurrentValues();
+          animExposureStrengthen.startFromCurrentValues();
           break;
         case "section-1":
           animCamOut.startFromCurrentValues();
+          animExposureWeaken.startFromCurrentValues();
           break;
         case "section-2":
           animCamLeft.startFromCurrentValues();
+          animExposureWeaken.startFromCurrentValues();
           break;
         case "section-3":
           animCamBottom.startFromCurrentValues();
+          animExposureWeaken.startFromCurrentValues();
           break;
       }
       console.log(animations);
@@ -103,6 +130,7 @@ export default class Sketch {
 
     this.app.addUpdateCallback((deltaTime, time) => {
       animations.update();
+      this.gui.gui.updateDisplay();
       this.app.renderer.toneMappingExposure = Math.pow(ui.exposure.value, 4);
       this.app.bloomPass.threshold = ui.threshold.value;
       this.app.bloomPass.strength = ui.strength.value;
