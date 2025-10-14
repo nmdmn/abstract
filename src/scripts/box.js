@@ -28,7 +28,7 @@ export class Box {
     return new Three.ShaderMaterial({
       side : Three.DoubleSide,
       blending : Three.AdditiveBlending,
-      clipping : true,
+      clipping : false,
       fog : false,
       wireframe : false,
       transparent : true,
