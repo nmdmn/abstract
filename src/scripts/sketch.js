@@ -53,31 +53,34 @@ export default class Sketch {
     this.grid = new Grid(this.app, ui);
     this.grid.mesh.position.copy(new Vector3(0, 0, -10));
 
+    const animCamIn = new Tween(this.camera.position)
+      .to(new Vector3(0, 0, 33), 500);
+    const animCamOut = new Tween(this.camera.position)
+      .to(new Vector3(0, 0, 99), 500);
+    const animCamLeft = new Tween(this.camera.position)
+      .to(new Vector3(-5, 0, 66), 500);
+    const animCamBottom = new Tween(this.camera.position)
+      .to(new Vector3(0, 10, 99), 500);
 
     const animations = new Group();
+    animations.add(animCamOut);
+    animations.add(animCamIn);
+    animations.add(animCamLeft);
+    animations.add(animCamBottom);
 
     document.querySelector("main").addEventListener("scrollsnapchanging", (event) => {
-      animations.removeAll();
       switch (event.snapTargetBlock.id) {
         case "section-0":
-          animations.add(new Tween(this.camera.position)
-            .to(new Vector3(0, 0, 33), 500)
-            .start());
+          animCamIn.startFromCurrentValues();
           break;
         case "section-1":
-          animations.add(new Tween(this.camera.position)
-            .to(new Vector3(0, 0, 99), 500)
-            .start());
+          animCamOut.startFromCurrentValues();
           break;
         case "section-2":
-          animations.add(new Tween(this.camera.position)
-            .to(new Vector3(-5, 0, 66), 500)
-            .start());
+          animCamLeft.startFromCurrentValues();
           break;
         case "section-3":
-          animations.add(new Tween(this.camera.position)
-            .to(new Vector3(0, 10, 99), 500)
-            .start());
+          animCamBottom.startFromCurrentValues();
           break;
       }
       console.log(animations);
