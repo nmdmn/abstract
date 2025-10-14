@@ -20,7 +20,7 @@ void main() {
   float x = smoothstep(-.03, .03, sin(theta) * cos(phi));
   float y = smoothstep(-.103, .103, sin(theta) * sin(phi));
   float z = smoothstep(-.33, .33, cos(theta));
-  const float scale = 0.5;
+  const float scale = 0.3;
   vec3 newPosition = position + vec3(x, y, z) * scale;
   vec4 worldPosition = modelViewMatrix * vec4(newPosition, 1.);
 
