@@ -8,31 +8,31 @@ import {Grid} from "./grid.js";
 
 const ui = {
   alpha : {
-    value : .33,
+    value : .65,
     min : .0,
     max : 1.,
     step : .01,
   },
   exposure : {
-    value : .5,
+    value : .65,
     min : .1,
     max : 2.,
     step : .01,
   },
   threshold : {
-    value : .0,
+    value : .55,
     min : .0,
     max : 1.,
     step : .01,
   },
   strength : {
-    value : 1.,
+    value : .5,
     min : .0,
     max : 3.,
     step : .1,
   },
   radius : {
-    value : .0,
+    value : 1.,
     min : .0,
     max : 1.,
     step : .01,

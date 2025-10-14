@@ -7,6 +7,9 @@ import {UnrealBloomPass} from 'three/examples/jsm/postprocessing/UnrealBloomPass
 
 export class App {
   constructor(canvas, camera) {
+    window.addEventListener('resize', () => { this.onResize(); }, false);
+    window.addEventListener('keydown', event => { this.onKey(event); });
+
     this.canvas = document.querySelector(canvas);
     this.camera = camera;
     this.cameraControl = new OrbitControls(this.camera, this.canvas);
@@ -15,6 +18,9 @@ export class App {
       canvas : this.canvas,
       antialias : true,
     });
+    this.composer = new EffectComposer(this.renderer);
+    this.onResize();
+
     this.renderer.toneMapping = Three.ACESFilmicToneMapping;
     //this.renderer.toneMapping = Three.ReinhardToneMapping;
     this.renderer.outputColorSpace = Three.SRGBColorSpace;
@@ -23,20 +29,14 @@ export class App {
     this.renderPass = new RenderPass(this.scene, this.camera);
     this.outputPass = new OutputPass();
     this.bloomPass = new UnrealBloomPass(new Three.Vector2(window.innerWidth, window.innerHeight), 1.5, .4, .85);
-    this.composer = new EffectComposer(this.renderer);
     this.composer.addPass(this.renderPass);
-    //this.composer.addPass(this.bloomPass);
-    //this.composer.addPass(this.outputPass);
+    this.composer.addPass(this.bloomPass);
+    this.composer.addPass(this.outputPass);
 
     this.clock = new Three.Clock();
     this.resizeCallbacks = [];
     this.keydownCallbacks = [];
     this.updateCallbacks = [];
-
-    window.addEventListener('resize', () => { this.onResize(); }, false);
-    window.addEventListener('keydown', event => { this.onKey(event); });
-    this.onResize();
-
   }
 
   addResizeCallback(resizeCallback) { this.resizeCallbacks.push(resizeCallback); }
@@ -50,7 +50,9 @@ export class App {
 
     this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
+    this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.composer.setSize(window.innerWidth, window.innerHeight);
   }
 
   onKey(event) {
