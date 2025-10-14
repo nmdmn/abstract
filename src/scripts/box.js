@@ -58,7 +58,7 @@ export class Box {
     const noiseVBO = new BufferObject(numVertices, 1);    // NOTE its a single float normalized
     const sampler = new createNoise3D();
     sampler.perlin_octaves = 8;
-    const offset = .25;
+    const offset = 3.;
     for (let nY = 0; nY < resolution; nY++) {
       for (let nZ = 0; nZ < resolution; nZ++) {
         for (let nX = 0; nX < resolution; nX++) {
