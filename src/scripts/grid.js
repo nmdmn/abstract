@@ -56,7 +56,7 @@ export class Grid {
     const sampler = new createNoise3D();
     sampler.perlin_octaves = 8;
     for (let i = 0; i < posArrayLen; i += 3) {
-      const scale = .05;
+      const scale = 3.5;
       const noise =
           sampler(geometry.attributes.position.array[i] * scale,
                 geometry.attributes.position.array[i + 1] * scale,
