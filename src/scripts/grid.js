@@ -8,7 +8,7 @@ export class Grid {
     this.app = app;
     this.ui = ui;
     this.shader = this.initShader();
-    this.geometry = this.initGeometry(100, 300);
+    this.geometry = this.initGeometry(100, 50);
 
     this.mesh = new Three.Points(this.geometry, this.shader);
     this.app.scene.add(this.mesh);

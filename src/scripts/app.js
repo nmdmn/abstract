@@ -4,6 +4,8 @@ import {OrbitControls, OutputPass} from "three/examples/jsm/Addons.js";
 import {EffectComposer} from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass.js';
 import {UnrealBloomPass} from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import {SSAOPass} from 'three/examples/jsm/postprocessing/SSAOPass.js';
+import {FXAAPass} from 'three/examples/jsm/postprocessing/FXAAPass.js';
 
 export class App {
   constructor(canvas, camera) {
@@ -29,9 +31,13 @@ export class App {
     this.renderPass = new RenderPass(this.scene, this.camera);
     this.outputPass = new OutputPass();
     this.bloomPass = new UnrealBloomPass(new Three.Vector2(window.innerWidth, window.innerHeight), 1.5, .4, .85);
+    this.ssaoPass = new SSAOPass(this.scene, this.camera, window.innerWidth, window.innerHeight);
+    this.fxaaPass = new FXAAPass();
     this.composer.addPass(this.renderPass);
     this.composer.addPass(this.bloomPass);
     this.composer.addPass(this.outputPass);
+    this.composer.addPass(this.ssaoPass);
+    this.composer.addPass(this.fxaaPass);
 
     this.clock = new Three.Clock();
     this.resizeCallbacks = [];

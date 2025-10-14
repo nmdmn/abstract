@@ -8,7 +8,7 @@ import {Grid} from "./grid.js";
 
 const ui = {
   alpha : {
-    value : .75,
+    value : 1.,
     min : .0,
     max : 1.,
     step : .01,
@@ -20,7 +20,7 @@ const ui = {
     step : .01,
   },
   threshold : {
-    value : .4,
+    value : .75,
     min : .0,
     max : 1.,
     step : .01,
@@ -32,7 +32,7 @@ const ui = {
     step : .1,
   },
   radius : {
-    value : .8,
+    value : .65,
     min : .0,
     max : 1.,
     step : .01,
@@ -45,7 +45,7 @@ export default class Sketch {
 
     this.camera = new Three.PerspectiveCamera(33, window.innerWidth / window.innerHeight, .1, 1000.);
     this.camera.lookAt(new Vector3(0, 0, 0));
-    this.camera.position.copy(new Vector3(0, 0, 56));
+    this.camera.position.copy(new Vector3(0, 0, 99));
     this.app = new App(canvas, this.camera);
 
     this.box = new Box(this.app, ui);
