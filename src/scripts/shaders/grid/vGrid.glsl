@@ -14,13 +14,13 @@ float map(float value, float min1, float max1, float min2, float max2) {
 }
 
 void main() {
-  float animOffset = time + 1. / noise;
-  float theta = animOffset / 3.;
-  float phi = animOffset / 7.;
-  float x = smoothstep(-.03, .03, sin(theta) * cos(phi));
-  float y = smoothstep(-.103, .103, sin(theta) * sin(phi));
+  float animOffset = time + (1. / noise) * .1;
+  float theta = animOffset / 4.;
+  float phi = animOffset / 6.;
+  float x = smoothstep(-.06, .06, sin(theta) * cos(phi));
+  float y = smoothstep(-.13, .13, sin(theta) * sin(phi));
   float z = smoothstep(-.33, .33, cos(theta));
-  const float scale = 0.5;
+  const float scale = .5;
   vec3 newPosition = position + vec3(x, y, z) * scale;
   vec4 worldPosition = modelViewMatrix * vec4(newPosition, 1.);
 
@@ -28,6 +28,6 @@ void main() {
   vNoise = noise;
   vPos = newPosition;
 
-  gl_PointSize = (1. / -worldPosition.z) * noise + 9.;
+  gl_PointSize = (1. / -worldPosition.z) * noise + 4.;
   gl_Position = projectionMatrix * worldPosition;
 }

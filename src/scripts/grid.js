@@ -8,7 +8,7 @@ export class Grid {
     this.app = app;
     this.ui = ui;
     this.shader = this.initShader();
-    this.geometry = this.initGeometry(200, 400);
+    this.geometry = this.initGeometry(100, 100);
 
     this.mesh = new Three.Points(this.geometry, this.shader);
     this.app.scene.add(this.mesh);
@@ -53,15 +53,15 @@ export class Grid {
     const posArrayLen = geometry.attributes.position.array.length;
     const numVertices = posArrayLen / 3;
     const noisePerVertex = new Float32Array(numVertices);
-    const noise = new createNoise3D();
-    noise.perlin_octaves = 8;
+    const sampler = new createNoise3D();
+    sampler.perlin_octaves = 8;
     for (let i = 0; i < posArrayLen; i += 3) {
-      const offset = 0.5;
-      const noiseVal =
-          noise(geometry.attributes.position.array[i] * offset,
-                geometry.attributes.position.array[i + 1] * offset,
-                geometry.attributes.position.array[i + 2] * offset);
-      noisePerVertex.set([ noiseVal ], i / 3);
+      const scale = .3;
+      const noise =
+          sampler(geometry.attributes.position.array[i] * scale,
+                geometry.attributes.position.array[i + 1] * scale,
+                geometry.attributes.position.array[i + 2] * scale);
+      noisePerVertex.set([ noise ], i / 3);
     }
 
     geometry.setAttribute("noise", new Three.BufferAttribute(noisePerVertex, 1));
