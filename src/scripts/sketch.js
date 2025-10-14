@@ -8,7 +8,31 @@ import {Grid} from "./grid.js";
 
 const ui = {
   alpha : {
-    value : .33,
+    value : .5,
+    min : .0,
+    max : 1.,
+    step : .01,
+  },
+  exposure : {
+    value : .9,
+    min : .1,
+    max : 2.,
+    step : .01,
+  },
+  threshold : {
+    value : .3,
+    min : .0,
+    max : 1.,
+    step : .01,
+  },
+  strength : {
+    value : .5,
+    min : .0,
+    max : 3.,
+    step : .1,
+  },
+  radius : {
+    value : .8,
     min : .0,
     max : 1.,
     step : .01,
@@ -21,12 +45,12 @@ export default class Sketch {
 
     this.camera = new Three.PerspectiveCamera(33, window.innerWidth / window.innerHeight, .1, 1000.);
     this.camera.lookAt(new Vector3(0, 0, 0));
-    this.camera.position.copy(new Vector3(-36, -43, 49));
+    this.camera.position.copy(new Vector3(-36, -16, 36));
     this.app = new App(canvas, this.camera);
 
     this.box = new Box(this.app, ui);
     this.grid = new Grid(this.app, ui);
-    this.grid.mesh.position.copy(new Vector3(18, 21, 10));
+    this.grid.mesh.position.copy(new Vector3(36, 16, -10));
 
     this.app.addKeydownCallbacks((event) => {
       switch (event.key) {
@@ -34,6 +58,13 @@ export default class Sketch {
           Dat.GUI.toggleHide();
           break;
       }
+    });
+
+    this.app.addUpdateCallback(() => {
+      this.app.renderer.toneMappingExposure = Math.pow(ui.exposure.value, 4);
+      this.app.bloomPass.threshold = ui.threshold.value;
+      this.app.bloomPass.strength = ui.strength.value;
+      this.app.bloomPass.radius = ui.radius.value;
     });
 
     this.app.start();

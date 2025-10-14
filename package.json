@@ -9,7 +9,7 @@
     "start": "parcel src/index.html",
     "build": "parcel build --dist-dir rel src/index.html",
     "clean": "rm -rf rel dist",
-    "remove": "rm -rf node_modules rel dist"
+    "clearup": "rm -rf node_modules rel dist"
   },
   "devDependencies": {
     "@parcel/transformer-glsl": "^2.14.4",
