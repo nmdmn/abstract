@@ -14,19 +14,19 @@ const ui = {
     step : .01,
   },
   exposure : {
-    value : .7,
+    value : .8,
     min : .1,
     max : 2.,
     step : .01,
   },
   threshold : {
-    value : .2,
+    value : .6,
     min : .0,
     max : 1.,
     step : .01,
   },
   strength : {
-    value : 1.3,
+    value : .6,
     min : .0,
     max : 3.,
     step : .1,
