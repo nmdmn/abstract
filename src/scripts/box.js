@@ -15,8 +15,8 @@ export class Box {
     this.app.scene.add(this.mesh);
 
     this.app.addUpdateCallback((deltaTime, time) => {
-      this.mesh.rotation.x = ((time % 20) / 20) * (Math.PI * 2);
-      this.mesh.rotation.z = ((time % 30) / 30) * (Math.PI * 2);
+      this.mesh.rotation.x = ((time % 40) / 40) * (Math.PI * 2);
+      this.mesh.rotation.z = ((time % 50) / 50) * (Math.PI * 2);
       this.shader.uniforms["time"].value = time;
       this.shader.uniforms["deltaTime"].value = deltaTime;
       this.shader.uniforms["scroll"].value = window.scrollY;
