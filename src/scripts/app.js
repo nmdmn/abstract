@@ -15,9 +15,8 @@ export class App {
       canvas : this.canvas,
       antialias : true,
     });
-    //this.renderer.toneMapping = Three.ACESFilmicToneMapping;
+    this.renderer.toneMapping = Three.ACESFilmicToneMapping;
     //this.renderer.toneMapping = Three.ReinhardToneMapping;
-    //this.renderer.toneMappingExposure = Math.pow(1, 4);
     this.renderer.outputColorSpace = Three.SRGBColorSpace;
     this.renderer.setClearColor(0x000000);
 
@@ -96,7 +95,8 @@ export class UI {
       const uiItemName = uiSettingsPropNames[uiItemId];
       const uiItem = elements[uiItemName];
       if (uiItem.hasOwnProperty("type") && uiItem.type == "color") {
-        this.gui.addColor(uiItem, "value").name(uiItemName);
+        this.gui.addColor(uiItem, "value").name(uiItemName)
+        ;
       }
       if (uiItem.hasOwnProperty("listen") && uiItem.listen) {
         this.gui.add(uiItem, "value", uiItem.min, uiItem.max, uiItem.step).name(uiItemName).listen();
