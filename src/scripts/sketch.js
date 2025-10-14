@@ -77,7 +77,7 @@ export default class Sketch {
         strength : {value: .5},
         radius : {value: 1}},
         500)
-      .easing(Easing.Bounce.InOut)
+      .easing(Easing.Exponential.InOut)
       .start();
     const animExposureWeaken = new Tween(ui)
       .to({
@@ -87,7 +87,7 @@ export default class Sketch {
         strength : {value: .6},
         radius: {value : .9}},
         500)
-      .easing(Easing.Bounce.InOut);
+      .easing(Easing.Exponential.InOut);
     
     const animations = new Group();
     animations.add(animCamOut);
