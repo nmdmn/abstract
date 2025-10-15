@@ -56,17 +56,17 @@ export default class Sketch {
     // EASING functions
     // https://tweenjs.github.io/tween.js/examples/03_graphs.html 
     const animCamIn = new Tween(this.camera.position)
-      .to(new Vector3(0, -5, 33), 500)
+      .to(new Vector3(0, -5, 30), 500)
       .easing(Easing.Quadratic.InOut)
       .start();
     const animCamOut = new Tween(this.camera.position)
-      .to(new Vector3(0, 0, 99), 500)
+      .to(new Vector3(0, 5, 130), 500)
       .easing(Easing.Sinusoidal.InOut);
     const animCamLeft = new Tween(this.camera.position)
-      .to(new Vector3(-5.5, 0, 66), 500)
+      .to(new Vector3(-5.5, 0, 100), 500)
       .easing(Easing.Quadratic.InOut);
     const animCamBottom = new Tween(this.camera.position)
-      .to(new Vector3(0, 10, 99), 500)
+      .to(new Vector3(0, 25, 200), 500)
       .easing(Easing.Sinusoidal.InOut);
 
     const animExposureStrengthen = new Tween(ui)
