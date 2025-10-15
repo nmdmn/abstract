@@ -98,13 +98,17 @@ export default class Sketch {
     animations.add(animExposureStrengthen);
     animations.add(animExposureWeaken);
 
-//    document.querySelector("main").addEventListener("scroll", event => {
-//      console.log(event);
-//      this.camera.position.y += .1;
-//    });
+    let lastDistance = 0;
+    const container = document.querySelector("main");
+    container.addEventListener("scroll", event => {
+      const distance = container.scrollTop / (container.scrollHeight - innerHeight);
+      const deltaDistance = distance - lastDistance;
+      console.log(`dt=${deltaDistance}, d=${distance}`);
+      //this.grid.mesh.position.y = Math.cos(distance * Math.PI) * 10;
+      lastDistance = distance;
+    });
 
     // NOTE manual intersection check for mobile scroll-snap
-    this.backupCameraPosition = new Vector3();
     const sections = document.querySelectorAll("section");
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
