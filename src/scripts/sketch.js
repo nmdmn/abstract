@@ -63,10 +63,10 @@ export default class Sketch {
       .to(new Vector3(0, 5, 130), 500)
       .easing(Easing.Sinusoidal.InOut);
     const animCamLeft = new Tween(this.camera.position)
-      .to(new Vector3(-5.5, 0, 100), 500)
+      .to(new Vector3(-5.5, 0, 90), 500)
       .easing(Easing.Quadratic.InOut);
     const animCamBottom = new Tween(this.camera.position)
-      .to(new Vector3(0, 25, 200), 500)
+      .to(new Vector3(0, 15, 110), 500)
       .easing(Easing.Sinusoidal.InOut);
 
     const animExposureStrengthen = new Tween(ui)
