@@ -76,7 +76,7 @@ export default class Sketch {
         threshold : {value: .2},
         strength : {value: .5},
         radius : {value: 1}},
-        500)
+        1000)
       .easing(Easing.Exponential.InOut)
       .start();
     const animExposureWeaken = new Tween(ui)
@@ -86,7 +86,7 @@ export default class Sketch {
         threshold : {value: .6},
         strength : {value: .6},
         radius: {value : .9}},
-        500)
+        50)
       .easing(Easing.Exponential.InOut);
 
     const animations = new Group();
@@ -99,6 +99,9 @@ export default class Sketch {
     animations.add(animExposureWeaken);
 
     document.querySelector("main").addEventListener("scrollsnapchanging", event => {
+      animations.getAll().forEach(element => {
+        element.stop();
+      });
       switch (event.snapTargetBlock.id) {
         case "section-0":
           animCamIn.startFromCurrentValues();

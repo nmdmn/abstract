@@ -1,6 +1,6 @@
 import * as Dat from "dat.gui";
 import * as Three from "three";
-import {OrbitControls, OutputPass} from "three/examples/jsm/Addons.js";
+import {OutputPass} from "three/examples/jsm/Addons.js";
 import {EffectComposer} from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass.js';
 import {UnrealBloomPass} from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
@@ -11,7 +11,6 @@ export class App {
   constructor(canvas, camera) {
     this.canvas = document.querySelector(canvas);
     this.camera = camera;
-    this.cameraControl = new OrbitControls(this.camera, this.canvas);
     this.scene = new Three.Scene();
     this.renderer = new Three.WebGLRenderer({
       canvas : this.canvas,
@@ -43,7 +42,6 @@ export class App {
 
     window.addEventListener("resize", () => { this.onResize(); }, false);
     window.addEventListener("keydown", event => { this.onKey(event); });
-    document.addEventListener("scroll", () => {this.onScroll();});
   }
 
   addResizeCallback(resizeCallback) { this.resizeCallbacks.push(resizeCallback); }

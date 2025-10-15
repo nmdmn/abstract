@@ -3,10 +3,9 @@
 //@include utils.setHeaderFontSizes(36px, 20px);
 
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  scroll-behavior: smooth;
   font: {
     family: utils.$fontFamily;
     weight: utils.$fontWeight;
@@ -20,26 +19,33 @@ canvas {
   position: fixed;
   top: 0;
   left: 0;
+  pointer-events: none;
+  overflow: hidden;
+  touch-action: none;
 }
 
 header {
+  z-index: 1;
   position: fixed;
   height: utils.$headerHeight;
 }
 
 main {
+  position: relative;
   width: 100%;
   height: 100vh;
   overflow-y: scroll;
+  scroll-behavior: smooth;
   scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
 }
 
 section {
-  scroll-snap-align: center;
-  gap: utils.$headerHeight;
   display: flex;
-  align-items: center;
-  justify-content: center;
   width: 100%;
   height: 100vh;
+  gap: utils.$headerHeight;
+  align-items: center;
+  justify-content: center;
+  scroll-snap-align: start;
 }
