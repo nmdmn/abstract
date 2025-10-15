@@ -98,29 +98,64 @@ export default class Sketch {
     animations.add(animExposureStrengthen);
     animations.add(animExposureWeaken);
 
-    document.querySelector("main").addEventListener("scrollsnapchanging", event => {
-      animations.getAll().forEach(element => {
-        element.stop();
+    // NOTE manual intersection check for mobile scroll-snap
+    const sections = document.querySelectorAll("section");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animations.getAll().forEach(element => {
+            element.stop();
+          });
+          switch ([...sections].indexOf(entry.target)) {
+            case 0:
+              animCamIn.startFromCurrentValues();
+              animExposureStrengthen.startFromCurrentValues();
+              break;
+            case 1:
+              animCamOut.startFromCurrentValues();
+              animExposureWeaken.startFromCurrentValues();
+              break;
+            case 2:
+              animCamLeft.startFromCurrentValues();
+              animExposureWeaken.startFromCurrentValues();
+              break;
+            case 3:
+              animCamBottom.startFromCurrentValues();
+              animExposureWeaken.startFromCurrentValues();
+              break;
+          }
+        }
       });
-      switch (event.snapTargetBlock.id) {
-        case "section-0":
-          animCamIn.startFromCurrentValues();
-          animExposureStrengthen.startFromCurrentValues();
-          break;
-        case "section-1":
-          animCamOut.startFromCurrentValues();
-          animExposureWeaken.startFromCurrentValues();
-          break;
-        case "section-2":
-          animCamLeft.startFromCurrentValues();
-          animExposureWeaken.startFromCurrentValues();
-          break;
-        case "section-3":
-          animCamBottom.startFromCurrentValues();
-          animExposureWeaken.startFromCurrentValues();
-          break;
-      }
+    }, {
+      root: document.querySelector("main"),
+      threshold: 0.5
     });
+    sections.forEach(s => observer.observe(s));
+
+      // NOTE scroll-snap events handling (not working on mobile browsers)
+//    document.querySelector("main").addEventListener("scrollsnapchanging", event => {
+//      animations.getAll().forEach(element => {
+//        element.stop();
+//      });
+//      switch (event.snapTargetBlock.id) {
+//        case "section-0":
+//          animCamIn.startFromCurrentValues();
+//          animExposureStrengthen.startFromCurrentValues();
+//          break;
+//        case "section-1":
+//          animCamOut.startFromCurrentValues();
+//          animExposureWeaken.startFromCurrentValues();
+//          break;
+//        case "section-2":
+//          animCamLeft.startFromCurrentValues();
+//          animExposureWeaken.startFromCurrentValues();
+//          break;
+//        case "section-3":
+//          animCamBottom.startFromCurrentValues();
+//          animExposureWeaken.startFromCurrentValues();
+//          break;
+//      }
+//    });
 
     this.app.addKeydownCallbacks((event) => {
       switch (event.key) {
