@@ -34,8 +34,6 @@ export class App {
     this.ssaoPass = new SSAOPass(this.scene, this.camera, window.innerWidth, window.innerHeight);
     this.fxaaPass = new FXAAPass();
     this.composer.addPass(this.renderPass);
-    //this.composer.addPass(this.ssaoPass);
-    //this.composer.addPass(this.fxaaPass);
     
     this.maskPass = new ShaderPass({
       uniforms: {
