@@ -104,7 +104,6 @@ export default class Sketch {
     container.addEventListener("scroll", event => {
       const distance = container.scrollTop / (container.scrollHeight - innerHeight);
       deltaDistance = distance - lastDistance;
-      console.log(`dt=${deltaDistance}, d=${distance}`);
       lastDistance = distance;
     });
 
