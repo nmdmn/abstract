@@ -99,12 +99,12 @@ export default class Sketch {
     animations.add(animExposureWeaken);
 
     let lastDistance = 0;
+    let deltaDistance = 0;
     const container = document.querySelector("main");
     container.addEventListener("scroll", event => {
       const distance = container.scrollTop / (container.scrollHeight - innerHeight);
-      const deltaDistance = distance - lastDistance;
+      deltaDistance = distance - lastDistance;
       console.log(`dt=${deltaDistance}, d=${distance}`);
-      //this.grid.mesh.position.y = Math.cos(distance * Math.PI) * 10;
       lastDistance = distance;
     });
 
@@ -112,7 +112,7 @@ export default class Sketch {
     const sections = document.querySelectorAll("section");
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && deltaDistance < .025) {
           //this.camera.position.copy(new Vector3(0, 0, 5));
           animations.getAll().forEach(element => {
             element.stop();
