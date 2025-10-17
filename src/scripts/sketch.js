@@ -111,7 +111,7 @@ export default class Sketch {
     const sections = document.querySelectorAll("section");
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting && deltaDistance < .025) {
+        if (entry.isIntersecting) {
           //this.camera.position.copy(new Vector3(0, 0, 5));
           animations.getAll().forEach(element => {
             element.stop();
