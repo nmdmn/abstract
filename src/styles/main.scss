@@ -56,6 +56,18 @@ section {
   align-items: center;
 }
 
+.homeTop {
+  grid-column: 2 / 12;
+  grid-row: 2 / 7;
+  align-items: center;
+}
+
+.homeBot {
+  grid-column: 2 / 12;
+  grid-row: 9 / 12;
+  align-items: center;
+}
+
 .glass {
   border-radius: 5px;
   //box-shadow: 0 30px 30px rgba(0, 0, 0, .5);

@@ -20,6 +20,8 @@ export class App {
       antialias : true,
     });
     this.blurRenderTarget = new Three.WebGLRenderTarget(window.innerWidth, window.innerHeight);
+    this.blurRenderTarget.toneMapping = Three.ACESFilmicToneMapping;
+    this.blurRenderTarget.outputColorSpace = Three.SRGBColorSpace;
     this.composer = new EffectComposer(this.renderer);
     this.onResize();
 
@@ -35,11 +37,15 @@ export class App {
     this.fxaaPass = new FXAAPass();
     this.composer.addPass(this.renderPass);
     
+    this.MAX_GLASSES = 8;
+    const rectArray = [];
+    for (let i = 0; i < this.MAX_GLASSES; i++) rectArray.push(new Three.Vector4());
     this.maskPass = new ShaderPass({
       uniforms: {
         tDiffuse: { value: null },
         tBlur: { value: null },
-        rect: { value: new Three.Vector4() },
+        rects: { value: rectArray},
+        rectCount: { value: 0 },
       },
       vertexShader: /* glsl */`
         varying vec2 vUv;
@@ -49,22 +55,38 @@ export class App {
         }
       `,
       fragmentShader: /* glsl */`
-        uniform sampler2D tDiffuse;
-        uniform sampler2D tBlur;
-        uniform vec4 rect; // x, y, w, h
-        varying vec2 vUv;
-        void main() {
-          vec4 sceneColor = texture2D(tDiffuse, vUv);
-          vec4 blurColor = texture2D(tBlur, vUv);
-          // Rect-based masking — only blend where the glass div sits
-          bool inside =
-            vUv.x >= rect.x && vUv.x <= rect.x + rect.z &&
-            vUv.y >= rect.y && vUv.y <= rect.y + rect.w;
+      uniform sampler2D tDiffuse;
+      uniform sampler2D tBlur;
+      uniform vec4 rects[${this.MAX_GLASSES}];
+      uniform int rectCount;
+      varying vec2 vUv;
 
-          gl_FragColor = inside
-            ? mix(sceneColor, blurColor, 1.)
-            : sceneColor;
+      // How soft the edge is — tweak as you like
+      const float edgeSoftness = 0.01; // in UV units (~1% of screen width)
+
+      void main() {
+        vec4 sceneColor = texture2D(tDiffuse, vUv);
+        vec4 blurColor = texture2D(tBlur, vUv);
+        
+        float mask = 0.0;
+
+        for (int i = 0; i < ${this.MAX_GLASSES}; i++) {
+          if (i >= rectCount) break;
+
+          vec4 r = rects[i];
+          // compute soft falloff
+          float insideX = smoothstep(r.x, r.x + edgeSoftness, vUv.x) *
+                          smoothstep(r.x + r.z, r.x + r.z - edgeSoftness, vUv.x);
+          float insideY = smoothstep(r.y, r.y + edgeSoftness, vUv.y) *
+                          smoothstep(r.y + r.w, r.y + r.w - edgeSoftness, vUv.y);
+          
+          float localMask = insideX * insideY;
+          mask = max(mask, localMask); // union of all glass areas
         }
+
+        gl_FragColor = mix(sceneColor, blurColor, mask);
+      }
+
       `,
     });
     this.composer.addPass(this.maskPass);
@@ -80,7 +102,6 @@ export class App {
     this.blurComposer.addPass(this.vBlurPass);
     this.blurComposer.addPass(this.outputPass);
 
-    this.maskPass.uniforms.tBlur.value = this.blurRenderTarget.texture;
 
     this.clock = new Three.Clock();
     this.resizeCallbacks = [];
@@ -121,15 +142,20 @@ export class App {
 
     this.blurComposer.render();
 
+    this.maskPass.uniforms.tBlur.value = this.blurRenderTarget.texture;
+    const glassDivs = document.querySelectorAll(".glass");
+    let rectCount = 0;
+    for (let i = 0; i < glassDivs.length && i < this.MAX_GLASSES; i++) {
+      const rect = glassDivs[i].getBoundingClientRect();
+      const x = rect.left / window.innerWidth;
+      const y = rect.top / window.innerHeight;
+      const w = rect.width / window.innerWidth;
+      const h = rect.height / window.innerHeight;
 
-    const rect = document.querySelector(".glass").getBoundingClientRect();
-    const x = rect.left / window.innerWidth;
-    const y = rect.top / window.innerHeight;
-    const w = rect.width / window.innerWidth;
-    const h = rect.height / window.innerHeight;
-
-    this.maskPass.uniforms.rect.value.set(x, 1.0 - y - h, w, h);
-
+      this.maskPass.uniforms.rects.value[i].set(x, 1.0 - y - h, w, h);
+      rectCount++;
+    }
+    this.maskPass.uniforms.rectCount.value = rectCount;
     this.composer.render();
 
     window.requestAnimationFrame(this.tick.bind(this));
