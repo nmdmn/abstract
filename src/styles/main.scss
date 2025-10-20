@@ -50,6 +50,17 @@ section {
   scroll-snap-align: start;
 }
 
+.glass {
+  border-radius: 5px;
+  //box-shadow: 0 30px 30px rgba(0, 0, 0, .5);
+  padding: 2rem;
+  color: white;
+  background: rgba(0, 0, 0, .25);
+  //filter: blur(20px);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
 .hero {
   grid-column: 2 / 12;
   grid-row: 6 / 12;
@@ -65,16 +76,17 @@ section {
 .homeBot {
   grid-column: 2 / 12;
   grid-row: 9 / 12;
-  align-items: center;
+align-items: center;
 }
 
-.glass {
-  border-radius: 5px;
-  //box-shadow: 0 30px 30px rgba(0, 0, 0, .5);
-  padding: 2rem;
-  color: white;
-  background: rgba(0, 0, 0, .25);
-  //filter: blur(20px);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+.lefty {
+  grid-column: 2 / 8;
+  grid-row: 1 / 12;
+align-items: center;
+}
+
+.topy {
+  grid-column: 2 / 12;
+  grid-row: 1 / 9;
+align-items: center;
 }
