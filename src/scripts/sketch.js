@@ -1,42 +1,42 @@
 import * as Dat from "dat.gui";
-import {Tween, Group, Easing} from "@tweenjs/tween.js";
+import { Tween, Group, Easing } from "@tweenjs/tween.js";
 import * as Three from "three";
-import {Vector3} from "three";
+import { Vector3 } from "three";
 
-import {App, UI} from "./app.js";
-import {Box} from "./box";
-import {Grid} from "./grid.js";
+import { App, UI } from "./app.js";
+import { Box } from "./box";
+import { Grid } from "./grid.js";
 
 const ui = {
-  alpha : {
-    value : 1.,
-    min : .0,
-    max : 1.,
-    step : .01,
+  alpha: {
+    value: 1.,
+    min: .0,
+    max: 1.,
+    step: .01,
   },
-  exposure : {
-    value : .8,
-    min : .1,
-    max : 2.,
-    step : .01,
+  exposure: {
+    value: .8,
+    min: .1,
+    max: 2.,
+    step: .01,
   },
-  threshold : {
-    value : .6,
-    min : .0,
-    max : 1.,
-    step : .01,
+  threshold: {
+    value: .6,
+    min: .0,
+    max: 1.,
+    step: .01,
   },
-  strength : {
-    value : .6,
-    min : .0,
-    max : 3.,
-    step : .1,
+  strength: {
+    value: .6,
+    min: .0,
+    max: 3.,
+    step: .1,
   },
-  radius : {
-    value : .9,
-    min : .0,
-    max : 1.,
-    step : .01,
+  radius: {
+    value: .9,
+    min: .0,
+    max: 1.,
+    step: .01,
   },
 };
 
@@ -71,21 +71,23 @@ export default class Sketch {
 
     const animExposureStrengthen = new Tween(ui)
       .to({
-        aplha: {value: .7},
-        exposure: {value: 1.2},
-        threshold : {value: .2},
-        strength : {value: .5},
-        radius : {value: 1}},
+        aplha: { value: .7 },
+        exposure: { value: 1.2 },
+        threshold: { value: .2 },
+        strength: { value: .5 },
+        radius: { value: 1 }
+      },
         1000)
       .easing(Easing.Exponential.InOut)
       .start();
     const animExposureWeaken = new Tween(ui)
       .to({
-        alpha: {value: 1},
-        exposure: {value: .8},
-        threshold : {value: .6},
-        strength : {value: .6},
-        radius: {value : .9}},
+        alpha: { value: 1 },
+        exposure: { value: .8 },
+        threshold: { value: .6 },
+        strength: { value: .6 },
+        radius: { value: .9 }
+      },
         50)
       .easing(Easing.Exponential.InOut);
 
@@ -142,30 +144,30 @@ export default class Sketch {
     });
     sections.forEach(s => observer.observe(s));
 
-      // NOTE scroll-snap events handling (not working on mobile browsers)
-//    document.querySelector("main").addEventListener("scrollsnapchanging", event => {
-//      animations.getAll().forEach(element => {
-//        element.stop();
-//      });
-//      switch (event.snapTargetBlock.id) {
-//        case "section-0":
-//          animCamIn.startFromCurrentValues();
-//          animExposureStrengthen.startFromCurrentValues();
-//          break;
-//        case "section-1":
-//          animCamOut.startFromCurrentValues();
-//          animExposureWeaken.startFromCurrentValues();
-//          break;
-//        case "section-2":
-//          animCamLeft.startFromCurrentValues();
-//          animExposureWeaken.startFromCurrentValues();
-//          break;
-//        case "section-3":
-//          animCamBottom.startFromCurrentValues();
-//          animExposureWeaken.startFromCurrentValues();
-//          break;
-//      }
-//    });
+    // NOTE scroll-snap events handling (not working on mobile browsers)
+    //    document.querySelector("main").addEventListener("scrollsnapchanging", event => {
+    //      animations.getAll().forEach(element => {
+    //        element.stop();
+    //      });
+    //      switch (event.snapTargetBlock.id) {
+    //        case "section-0":
+    //          animCamIn.startFromCurrentValues();
+    //          animExposureStrengthen.startFromCurrentValues();
+    //          break;
+    //        case "section-1":
+    //          animCamOut.startFromCurrentValues();
+    //          animExposureWeaken.startFromCurrentValues();
+    //          break;
+    //        case "section-2":
+    //          animCamLeft.startFromCurrentValues();
+    //          animExposureWeaken.startFromCurrentValues();
+    //          break;
+    //        case "section-3":
+    //          animCamBottom.startFromCurrentValues();
+    //          animExposureWeaken.startFromCurrentValues();
+    //          break;
+    //      }
+    //    });
 
     this.app.addKeydownCallbacks((event) => {
       switch (event.key) {
