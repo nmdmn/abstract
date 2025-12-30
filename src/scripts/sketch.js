@@ -1,41 +1,41 @@
 import * as Dat from "dat.gui";
 import * as Three from "three";
-import {Vector3} from "three";
+import { Vector3 } from "three";
 
-import {App, UI} from "./app.js";
-import {Box} from "./box";
-import {Grid} from "./grid.js";
+import { App, UI } from "./app.js";
+import { Box } from "./box";
+import { Grid } from "./grid.js";
 
 const ui = {
-  alpha : {
-    value : 1.,
-    min : .0,
-    max : 1.,
-    step : .01,
+  alpha: {
+    value: 1.,
+    min: .0,
+    max: 1.,
+    step: .01,
   },
-  exposure : {
-    value : .8,
-    min : .1,
-    max : 2.,
-    step : .01,
+  exposure: {
+    value: .8,
+    min: .1,
+    max: 2.,
+    step: .01,
   },
-  threshold : {
-    value : .6,
-    min : .0,
-    max : 1.,
-    step : .01,
+  threshold: {
+    value: .6,
+    min: .0,
+    max: 1.,
+    step: .01,
   },
-  strength : {
-    value : .6,
-    min : .0,
-    max : 3.,
-    step : .1,
+  strength: {
+    value: .6,
+    min: .0,
+    max: 3.,
+    step: .1,
   },
-  radius : {
-    value : .9,
-    min : .0,
-    max : 1.,
-    step : .01,
+  radius: {
+    value: .9,
+    min: .0,
+    max: 1.,
+    step: .01,
   },
 };
 
