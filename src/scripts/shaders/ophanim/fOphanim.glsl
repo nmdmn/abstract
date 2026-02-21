@@ -25,6 +25,10 @@ vec3 bronze_palette(in float t) {
   return a + b*cos( 6.283185*(c*t+d) );
 }
 
+float map(vec3 p) {
+  return length(p) - 1.; //distance to sphere radius 1.
+}
+
 void mainImage(out vec4 fragColor, in vec2 fragCoord) {
   // shadertoy uniform maps /////////////////////////////////////////////////////
   float iTime = general.elapsedTime;
@@ -32,28 +36,34 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
   vec4 iMouse = vec4(general.mousePos, 1., 1.);
   vec3 iResolution = vec3(general.resolution, 1.);
   ///////////////////////////////////////////////////////////////////////////////
-
+  
   vec2 uv = (fragCoord * 2. - iResolution.xy) / iResolution.y;
-  vec2 uv0 = uv;
 
-  vec3 oColor = vec3(0.);
+  // init
+  vec3 ro = vec3(0., 0., -3.); // ray origin
+  vec3 rd = normalize(vec3(uv, 1.)); // ray direction
+  vec3 c = vec3(0.);
 
-  for(float i = 0.; i < 3.; i++) {
-    uv = fract(uv * 1.5) - .5;
+  float t = 0.;
 
-    float d0 = length(uv0);
-    float d = length(uv) * exp(-d0);
+  const float max_step = 80.;
+  // raymarch
+  for (float i = 0.; i < max_step; i++) {
+    vec3 p = ro + rd * t; // position along the ray
 
-    vec3 color = gold_palette(d * i / .4 + iTime / 4.);
+    float d = map(p); //current distance to the scene
 
-    d = sin(d * 8. + iTime) / 8.;
-    d = abs(d);
+    t += d; // "march"
+    
+    //c = vec3(i) / max_step;
 
-    d = pow(.01 / d, 1.2);
-    oColor += color * d;
+    if (d < .001) break;
+    if (t > 100.) break;
   }
 
-  fragColor = vec4(oColor, 1.);
+  c = vec3(t * .2); //coloring with the z-buffer
+
+  fragColor = vec4(c, 1.);
 }
 
 void main() {
