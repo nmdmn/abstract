@@ -46,10 +46,10 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 
     vec3 color = gold_palette(d * i / .4 + iTime / 4.);
 
-    d = sin(d * 8. + iTime) / 8. + 1e-10; //XXX the tiny ammount of positive offset is needed to counter the flickering, asdasd
+    d = sin(d * 8. + iTime) / 8.;
     d = abs(d);
 
-    d = pow(.01 / d, 2.0);
+    d = pow(.01 / d, 1.2);
     oColor += color * d;
   }
 

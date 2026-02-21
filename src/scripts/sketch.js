@@ -7,35 +7,11 @@ import VertexShader from "./shaders/ophanim/vOphanim.glsl"
 import FragmentShader from "./shaders/ophanim/fOphanim.glsl"
 
 const ui = {
-  exposure: {
-    value: 1.,
-    min: .1,
-    max: 2.,
-    step: .01,
-  },
-  threshold: {
-    value: .0,
-    min: .0,
-    max: 1.,
-    step: .01,
-  },
-  strength: {
-    value: .0,
-    min: .0,
-    max: 3.,
-    step: .1,
-  },
-  radius: {
-    value: .0,
-    min: .0,
-    max: 1.,
-    step: .01,
-  },
 };
 
 export default class Sketch {
   constructor(canvas) {
-    this.gui = new UI(ui);
+    //this.gui = new UI(ui);
 
     this.camera = new Three.OrthographicCamera(-1, 1, 1, -1, 0, 1)
     this.app = new App(canvas, this.camera);
@@ -92,10 +68,6 @@ export default class Sketch {
       this.uniforms.general.value.deltaTime = deltaTime;
       this.uniforms.general.value.mousePos.copy(mouse).multiplyScalar(.26);
       this.uniforms.general.value.resolution = new Three.Vector2(window.innerWidth, window.innerHeight);
-      this.app.renderer.toneMappingExposure = Math.pow(ui.exposure.value, 4);
-      this.app.bloomPass.threshold = ui.threshold.value;
-      this.app.bloomPass.strength = ui.strength.value;
-      this.app.bloomPass.radius = ui.radius.value;
     });
 
     this.app.start();

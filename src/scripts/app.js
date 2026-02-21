@@ -1,11 +1,5 @@
 import * as Dat from "dat.gui";
 import * as Three from "three";
-import { OrbitControls, OutputPass } from "three/examples/jsm/Addons.js";
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
-import { SSAOPass } from 'three/examples/jsm/postprocessing/SSAOPass.js';
-import { FXAAPass } from 'three/examples/jsm/postprocessing/FXAAPass.js';
 
 export class App {
   constructor(canvas, camera) {
@@ -14,30 +8,12 @@ export class App {
 
     this.canvas = document.querySelector(canvas);
     this.camera = camera;
-    this.cameraControl = new OrbitControls(this.camera, this.canvas);
     this.scene = new Three.Scene();
     this.renderer = new Three.WebGLRenderer({
       canvas: this.canvas,
       antialias: true,
     });
-    this.composer = new EffectComposer(this.renderer);
     this.onResize();
-
-    //this.renderer.toneMapping = Three.ACESFilmicToneMapping;
-    this.renderer.toneMapping = Three.ReinhardToneMapping;
-    this.renderer.outputColorSpace = Three.SRGBColorSpace;
-    this.renderer.setClearColor(0x000000);
-
-    this.renderPass = new RenderPass(this.scene, this.camera);
-    this.outputPass = new OutputPass();
-    this.bloomPass = new UnrealBloomPass(new Three.Vector2(window.innerWidth, window.innerHeight), 1.5, .4, .85);
-    this.ssaoPass = new SSAOPass(this.scene, this.camera, window.innerWidth, window.innerHeight);
-    this.fxaaPass = new FXAAPass();
-    this.composer.addPass(this.renderPass);
-    this.composer.addPass(this.bloomPass);
-    this.composer.addPass(this.outputPass);
-    this.composer.addPass(this.ssaoPass);
-    this.composer.addPass(this.fxaaPass);
 
     this.timer = new Three.Timer();
     this.resizeCallbacks = [];
@@ -58,7 +34,6 @@ export class App {
     this.camera.updateProjectionMatrix();
     this.renderer.setPixelRatio(window.devicePixelRatio);
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.composer.setSize(window.innerWidth, window.innerHeight);
   }
 
   onKey(event) {
@@ -76,8 +51,7 @@ export class App {
       this.updateCallbacks[callback](deltaTime, elapsedTime);
     }
 
-    //this.renderer.render(this.scene, this.camera);
-    this.composer.render();
+    this.renderer.render(this.scene, this.camera);
     window.requestAnimationFrame(this.tick.bind(this));
   }
 
