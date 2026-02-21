@@ -26,7 +26,7 @@ export class App {
     //this.renderer.toneMapping = Three.ACESFilmicToneMapping;
     //this.renderer.toneMapping = Three.ReinhardToneMapping;
     //this.renderer.outputColorSpace = Three.SRGBColorSpace;
-    this.renderer.setClearColor(0x000000);
+    //this.renderer.setClearColor(0x000000);
 
     this.renderPass = new RenderPass(this.scene, this.camera);
     this.outputPass = new OutputPass();

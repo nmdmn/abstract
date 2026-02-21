@@ -51,6 +51,20 @@ export default class Sketch {
     };
     const geometry = new Three.PlaneGeometry(2, 2);
     const material = new Three.ShaderMaterial({
+      side: Three.DoubleSide,
+      blending: Three.AdditiveBlending,
+      clipping: true,
+      fog: false,
+      wireframe: false,
+      transparent: true,
+      depthTest: true,
+      depthWrite: true,
+      extensions: {
+        derivates: "#extensions GL_OES_standard_derivates : enable",
+        fragDepth: true,
+        drawBuffers: true,
+        haderTextureLOD: true,
+      },
       uniforms: this.uniforms,
       vertexShader: VertexShader,
       fragmentShader: FragmentShader,
