@@ -7,32 +7,26 @@ import VertexShader from "./shaders/ophanim/vOphanim.glsl"
 import FragmentShader from "./shaders/ophanim/fOphanim.glsl"
 
 const ui = {
-  alpha: {
-    value: 1.,
-    min: .0,
-    max: 1.,
-    step: .01,
-  },
   exposure: {
-    value: .8,
+    value: 1.,
     min: .1,
     max: 2.,
     step: .01,
   },
   threshold: {
-    value: .6,
+    value: .0,
     min: .0,
     max: 1.,
     step: .01,
   },
   strength: {
-    value: .6,
+    value: .0,
     min: .0,
     max: 3.,
     step: .1,
   },
   radius: {
-    value: .9,
+    value: .0,
     min: .0,
     max: 1.,
     step: .01,

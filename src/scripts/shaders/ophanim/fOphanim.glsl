@@ -14,13 +14,21 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
   vec4 iMouse = vec4(general.mousePos, 1., 1.);
   vec3 iResolution = vec3(general.resolution, 1.);
   ///////////////////////////////////////////////////////////////////////////////
-  fragColor = vec4(0.);
+  
+  vec2 uv = (fragCoord * 2. - iResolution.xy) / iResolution.y;
+
+  float d = length(uv);
+  d -= .5;
+  d = abs(d);
+  d = step(.025, d);
+
+  fragColor = vec4(vec3(d), 1.);
 }
 
 void main() {
-  vec2 fragCoord = vUv * 2. - 1.;
-  fragCoord.x *= general.resolution.x / general.resolution.y;
+  //mimic shadertoy fragCoord input vector
+  vec2 fragCoord = vUv * general.resolution.xy;
   vec4 fragColor;
   mainImage(fragColor, fragCoord);
-  gl_FragColor = vec4(fragColor.rgb, 1.);
+  gl_FragColor = fragColor;
 }
