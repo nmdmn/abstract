@@ -55,10 +55,9 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 
     t += d; // "march"
     
-    //c = vec3(i) / max_step;
+    //c = vec3(i) / max_step; //coloring with the iter. count
 
-    if (d < .001) break;
-    if (t > 100.) break;
+    if (d < .001 || t > 100.) break;
   }
 
   c = vec3(t * .2); //coloring with the z-buffer
