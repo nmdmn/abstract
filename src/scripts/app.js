@@ -1,11 +1,11 @@
 import * as Dat from "dat.gui";
 import * as Three from "three";
-import {OrbitControls, OutputPass} from "three/examples/jsm/Addons.js";
-import {EffectComposer} from 'three/examples/jsm/postprocessing/EffectComposer.js';
-import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass.js';
-import {UnrealBloomPass} from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
-import {SSAOPass} from 'three/examples/jsm/postprocessing/SSAOPass.js';
-import {FXAAPass} from 'three/examples/jsm/postprocessing/FXAAPass.js';
+import { OrbitControls, OutputPass } from "three/examples/jsm/Addons.js";
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import { SSAOPass } from 'three/examples/jsm/postprocessing/SSAOPass.js';
+import { FXAAPass } from 'three/examples/jsm/postprocessing/FXAAPass.js';
 
 export class App {
   constructor(canvas, camera) {
@@ -17,8 +17,8 @@ export class App {
     this.cameraControl = new OrbitControls(this.camera, this.canvas);
     this.scene = new Three.Scene();
     this.renderer = new Three.WebGLRenderer({
-      canvas : this.canvas,
-      antialias : true,
+      canvas: this.canvas,
+      antialias: true,
     });
     this.composer = new EffectComposer(this.renderer);
     this.onResize();
@@ -39,7 +39,7 @@ export class App {
     this.composer.addPass(this.ssaoPass);
     this.composer.addPass(this.fxaaPass);
 
-    this.clock = new Three.Clock();
+    this.timer = new Three.Timer();
     this.resizeCallbacks = [];
     this.keydownCallbacks = [];
     this.updateCallbacks = [];
@@ -50,7 +50,7 @@ export class App {
   addUpdateCallback(updateCallback) { this.updateCallbacks.push(updateCallback); }
 
   onResize() {
-    for ( const callback in this.resizeCallbacks) {
+    for (const callback in this.resizeCallbacks) {
       this.resizeCallbacks[callback]();
     }
 
@@ -68,8 +68,12 @@ export class App {
   }
 
   tick() {
+    this.timer.update();
+    const deltaTime = this.timer.getDelta();
+    const elapsedTime = this.timer.getElapsed();
+
     for (const callback in this.updateCallbacks) {
-      this.updateCallbacks[callback](this.clock.getDelta(), this.clock.getElapsedTime());
+      this.updateCallbacks[callback](deltaTime, elapsedTime);
     }
 
     //this.renderer.render(this.scene, this.camera);
@@ -104,7 +108,7 @@ export class UI {
       const uiItem = elements[uiItemName];
       if (uiItem.hasOwnProperty("type") && uiItem.type == "color") {
         this.gui.addColor(uiItem, "value").name(uiItemName)
-        ;
+          ;
       }
       if (uiItem.hasOwnProperty("listen") && uiItem.listen) {
         this.gui.add(uiItem, "value", uiItem.min, uiItem.max, uiItem.step).name(uiItemName).listen();
