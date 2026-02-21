@@ -1,5 +1,3 @@
-precision highp float;
-
 struct general_params {
   float elapsedTime;
   float deltaTime;
@@ -36,18 +34,26 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
   ///////////////////////////////////////////////////////////////////////////////
 
   vec2 uv = (fragCoord * 2. - iResolution.xy) / iResolution.y;
+  vec2 uv0 = uv;
 
-  float d = length(uv);
+  vec3 oColor = vec3(0.);
 
-  vec3 color = gold_palette(d + iTime / 3.);
+  for(float i = 0.; i < 3.; i++) {
+    uv = fract(uv * 1.5) - .5;
 
-  d = sin(d * 8. + iTime) / 8. + .000001; //XXX the tiny ammount of positive offset is needed to counter the flickering, asdasd
-  d = abs(d);
-  //d = smoothstep(0., .1, d);
-  d = .01 / d;
-  color *= d;
+    float d0 = length(uv0);
+    float d = length(uv) * exp(-d0);
 
-  fragColor = vec4(color, 1.);
+    vec3 color = gold_palette(d * i / .4 + iTime / 4.);
+
+    d = sin(d * 8. + iTime) / 8. + 1e-10; //XXX the tiny ammount of positive offset is needed to counter the flickering, asdasd
+    d = abs(d);
+
+    d = pow(.01 / d, 2.0);
+    oColor += color * d;
+  }
+
+  fragColor = vec4(oColor, 1.);
 }
 
 void main() {

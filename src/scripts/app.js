@@ -24,9 +24,9 @@ export class App {
     this.onResize();
 
     //this.renderer.toneMapping = Three.ACESFilmicToneMapping;
-    //this.renderer.toneMapping = Three.ReinhardToneMapping;
-    //this.renderer.outputColorSpace = Three.SRGBColorSpace;
-    //this.renderer.setClearColor(0x000000);
+    this.renderer.toneMapping = Three.ReinhardToneMapping;
+    this.renderer.outputColorSpace = Three.SRGBColorSpace;
+    this.renderer.setClearColor(0x000000);
 
     this.renderPass = new RenderPass(this.scene, this.camera);
     this.outputPass = new OutputPass();
@@ -36,8 +36,8 @@ export class App {
     this.composer.addPass(this.renderPass);
     this.composer.addPass(this.bloomPass);
     this.composer.addPass(this.outputPass);
-    //this.composer.addPass(this.ssaoPass);
-    //this.composer.addPass(this.fxaaPass);
+    this.composer.addPass(this.ssaoPass);
+    this.composer.addPass(this.fxaaPass);
 
     this.timer = new Three.Timer();
     this.resizeCallbacks = [];
