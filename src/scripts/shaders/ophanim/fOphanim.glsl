@@ -1,7 +1,7 @@
 struct general_params {
   float elapsedTime;
   float deltaTime;
-  vec2 mouse;
+  vec4 mouse;
   vec2 resolution;
 };
 uniform general_params general;
@@ -46,23 +46,27 @@ float sdBox(vec3 p, vec3 b) {
   return length(max(q, 0.)) + min(max(q.x, max(q.y, q.z)), 0.);
 }
 
+float sdOctahedron(vec3 p, float s) {
+  p = abs(p);
+  return (p.x + p.y + p.z - s) * .57735027;
+}
+
 float map(vec3 p) {
-  vec3 spherePosition = vec3(sin(general.elapsedTime) * 1.5, 0., 0.);
-  float sphere = sdSphere(p - spherePosition, 1.);
+  p.z += general.elapsedTime * .4;
+  p.xy = fract(p.xy) - .5;
+  p.z = mod(p.z, .25) - .125;
 
-  vec3 q = p;
-  q.xy *= rot2D(general.elapsedTime);
-  float box = sdBox(q * 1.5, vec3(.75)) / 1.5;
+  float box = sdOctahedron(p, .15);
 
-  float ground = p.y + .75;
 
-  return smin(ground, smin(sphere, box, .2), .1);
+  return box;
 }
 
 void main() {
   //setup clip space
   vec2 uv = (vUv * 2. - 1.) * vec2(general.resolution.x / general.resolution.y, 1.);
-  vec2 m = general.mouse * vec2(general.resolution.x / general.resolution.y, 1.0);
+  vec2 m = general.mouse.xy * vec2(general.resolution.x / general.resolution.y, 1.0);
+  if (general.mouse.z < 0.) m = vec2(cos(general.elapsedTime * .2), sin(general.elapsedTime * .2));
 
   // init
   vec3 ro = vec3(0., 0., -3.); // ray origin
@@ -71,28 +75,23 @@ void main() {
 
   float t = 0.;
 
-  // camera by mouse
-  ro.yz *= rot2D(-m.y);
-  rd.yz *= rot2D(-m.y);
-  if (ro.y < -.5) ro.y = -.5;
-  ro.xz *= rot2D(-m.x);
-  rd.xz *= rot2D(-m.x);
-
-  const float max_step = 80.;
   // raymarch
-  for (float i = 0.; i < max_step; i++) {
+  const int max_step = 80;
+  int i = 0;
+  for (i = 0; i < max_step; i++) {
     vec3 p = ro + rd * t; // position along the ray
 
+    p.xy *= rot2D(t * .2 * m.x);
+    p.y += sin(t * (m.y + 1.) * .5) * .35;
     float d = map(p); //current distance to the scene
 
     t += d; // "march"
     
-    //c = vec3(i) / max_step; //coloring with the iter. count
 
     if (d < .001 || t > 100.) break;
   }
 
-  c = vec3(t * .2); //coloring with the z-buffer
+  c = bronze_palette(t * .02 + float(i) * .005); //coloring with the z-buffer
 
   gl_FragColor = vec4(c, 1.);
 }
