@@ -1,7 +1,7 @@
 struct general_params {
   float elapsedTime;
   float deltaTime;
-  vec2 mousePos;
+  vec2 mouse;
   vec2 resolution;
 };
 uniform general_params general;
@@ -29,7 +29,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
   // shadertoy uniform maps /////////////////////////////////////////////////////
   float iTime = general.elapsedTime;
   float iTimeDelta = general.deltaTime;
-  vec4 iMouse = vec4(general.mousePos, 1., 1.);
+  vec4 iMouse = vec4((general.mouse * 2. - .5) * general.resolution, 1., 1.);
   vec3 iResolution = vec3(general.resolution, 1.);
   ///////////////////////////////////////////////////////////////////////////////
 
