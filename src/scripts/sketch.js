@@ -20,7 +20,7 @@ export default class Sketch {
         value: {
           elapsedTime: 0,
           deltaTime: 0,
-          mousePos: new Three.Vector2(.5, .5),
+          mouse: new Three.Vector2(0., 0.),
           resolution: new Three.Vector2(window.innerWidth, window.innerHeight),
         }
       },
@@ -57,7 +57,7 @@ export default class Sketch {
       }
     });
 
-    const mouse = new Three.Vector2();
+    const mouse = new Three.Vector2(0., 0.);
     window.addEventListener("mousemove", (event) => {
       mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
       mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -66,7 +66,7 @@ export default class Sketch {
     this.app.addUpdateCallback((deltaTime, elapsedTime) => {
       this.uniforms.general.value.elapsedTime = elapsedTime;
       this.uniforms.general.value.deltaTime = deltaTime;
-      this.uniforms.general.value.mousePos.copy(mouse).multiplyScalar(.26);
+      this.uniforms.general.value.mouse.copy(mouse);
       this.uniforms.general.value.resolution = new Three.Vector2(window.innerWidth, window.innerHeight);
     });
 

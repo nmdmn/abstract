@@ -1,7 +1,7 @@
 struct general_params {
   float elapsedTime;
   float deltaTime;
-  vec2 mousePos;
+  vec2 mouse;
   vec2 resolution;
 };
 uniform general_params general;
@@ -25,19 +25,44 @@ vec3 bronze_palette(in float t) {
   return a + b*cos( 6.283185*(c*t+d) );
 }
 
-float map(vec3 p) {
-  return length(p) - 1.; //distance to sphere radius 1.
+float smin( float a, float b, float k ) {
+    k *= 1.0/(1.0-sqrt(0.5));
+    float h = max( k-abs(a-b), 0.0 )/k;
+    return min(a,b) - k*0.5*(1.0+h-sqrt(1.0-h*(h-2.0)));
 }
 
-void mainImage(out vec4 fragColor, in vec2 fragCoord) {
-  // shadertoy uniform maps /////////////////////////////////////////////////////
-  float iTime = general.elapsedTime;
-  float iTimeDelta = general.deltaTime;
-  vec4 iMouse = vec4(general.mousePos, 1., 1.);
-  vec3 iResolution = vec3(general.resolution, 1.);
-  ///////////////////////////////////////////////////////////////////////////////
-  
-  vec2 uv = (fragCoord * 2. - iResolution.xy) / iResolution.y;
+mat2 rot2D(float a) {
+  float s = sin(a);
+  float c = cos(a);
+  return mat2(c, -s, s, c);
+}
+
+float sdSphere(vec3 p, float s) {
+  return length(p) - s;
+}
+
+float sdBox(vec3 p, vec3 b) {
+  vec3 q = abs(p) - b;
+  return length(max(q, 0.)) + min(max(q.x, max(q.y, q.z)), 0.);
+}
+
+float map(vec3 p) {
+  vec3 spherePosition = vec3(sin(general.elapsedTime) * 1.5, 0., 0.);
+  float sphere = sdSphere(p - spherePosition, 1.);
+
+  vec3 q = p;
+  q.xy *= rot2D(general.elapsedTime);
+  float box = sdBox(q * 1.5, vec3(.75)) / 1.5;
+
+  float ground = p.y + .75;
+
+  return smin(ground, smin(sphere, box, .2), .1);
+}
+
+void main() {
+  //setup clip space
+  vec2 uv = (vUv * 2. - 1.) * vec2(general.resolution.x / general.resolution.y, 1.);
+  vec2 m = general.mouse * vec2(general.resolution.x / general.resolution.y, 1.0);
 
   // init
   vec3 ro = vec3(0., 0., -3.); // ray origin
@@ -45,6 +70,13 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
   vec3 c = vec3(0.);
 
   float t = 0.;
+
+  // camera by mouse
+  ro.yz *= rot2D(-m.y);
+  rd.yz *= rot2D(-m.y);
+  if (ro.y < -.5) ro.y = -.5;
+  ro.xz *= rot2D(-m.x);
+  rd.xz *= rot2D(-m.x);
 
   const float max_step = 80.;
   // raymarch
@@ -62,13 +94,5 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 
   c = vec3(t * .2); //coloring with the z-buffer
 
-  fragColor = vec4(c, 1.);
-}
-
-void main() {
-  //mimic shadertoy fragCoord input vector
-  vec2 fragCoord = vUv * general.resolution.xy;
-  vec4 fragColor;
-  mainImage(fragColor, fragCoord);
-  gl_FragColor = fragColor;
+  gl_FragColor = vec4(c, 1.);
 }
