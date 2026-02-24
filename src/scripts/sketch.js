@@ -3,8 +3,8 @@ import * as Three from "three";
 
 import { App, UI } from "./app.js";
 
-import VertexShader from "./shaders/ophanim/vOphanim.glsl"
-import FragmentShader from "./shaders/ophanim/fOphanim.glsl"
+import VertexShader from "./shaders/ophanim/v_ophanim.glsl"
+import FragmentShader from "./shaders/ophanim/f_ophanim.glsl"
 
 const ui = {
 };
