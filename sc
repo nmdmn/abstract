@@ -29,31 +29,18 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
   // shadertoy uniform maps /////////////////////////////////////////////////////
   float iTime = general.elapsedTime;
   float iTimeDelta = general.deltaTime;
-  vec4 iMouse = vec4((general.mouse * 2. - .5) * general.resolution, 1., 1.);
+  vec4 iMouse = vec4(general.mouse, 1., 1.);
   vec3 iResolution = vec3(general.resolution, 1.);
   ///////////////////////////////////////////////////////////////////////////////
 
   vec2 uv = (fragCoord * 2. - iResolution.xy) / iResolution.y;
-  vec2 uv0 = uv;
 
-  vec3 oColor = vec3(0.);
+  float d = length(uv);
 
-  for(float i = 0.; i < 3.; i++) {
-    uv = fract(uv * 1.5) - .5;
+  d = abs(d);
+  d = smoothstep(.495, .5 , d);
 
-    float d0 = length(uv0);
-    float d = length(uv) * exp(-d0);
-
-    vec3 color = gold_palette(d * i / .4 + iTime / 4.);
-
-    d = sin(d * 8. + iTime) / 8.;
-    d = abs(d);
-
-    d = pow(.01 / d, 1.2);
-    oColor += color * d;
-  }
-
-  fragColor = vec4(oColor, 1.);
+  fragColor = vec4(vec3(d), 1.);
 }
 
 void main() {

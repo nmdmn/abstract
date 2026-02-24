@@ -3,8 +3,8 @@ import * as Three from "three";
 
 import { App, UI } from "./app.js";
 
-import VertexShader from "./shaders/ophanim/vOphanim.glsl"
-import FragmentShader from "./shaders/ophanim/fOphanim.glsl"
+import VertexShader from "./shaders/basic/vCircle.glsl"
+import FragmentShader from "./shaders/basic/fCircle.glsl"
 
 const ui = {
 };
@@ -13,6 +13,8 @@ export default class Sketch {
   constructor(canvas) {
     //this.gui = new UI(ui);
 
+    const mouse = new Three.Vector2(window.innerWidth / 2., window.innerHeight / 2.);
+
     this.camera = new Three.OrthographicCamera(-1, 1, 1, -1, 0, 1)
     this.app = new App(canvas, this.camera);
     this.uniforms = {
@@ -20,7 +22,7 @@ export default class Sketch {
         value: {
           elapsedTime: 0,
           deltaTime: 0,
-          mouse: new Three.Vector2(0., 0.),
+          mouse: mouse,
           resolution: new Three.Vector2(window.innerWidth, window.innerHeight),
         }
       },
@@ -57,10 +59,9 @@ export default class Sketch {
       }
     });
 
-    const mouse = new Three.Vector2(0., 0.);
     window.addEventListener("mousemove", (event) => {
-      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+      mouse.x = event.clientX;
+      mouse.y = window.innerHeight - event.clientY;
     });
 
     this.app.addUpdateCallback((deltaTime, elapsedTime) => {
