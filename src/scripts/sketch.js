@@ -3,8 +3,8 @@ import * as Three from "three";
 
 import { App, UI } from "./app.js";
 
-import VertexShader from "./shaders/basic/v_basic.glsl"
-import FragmentShader from "./shaders/basic/f_basic.glsl"
+import VertexShader from "./shaders/limestone_cave/v_limestone_cave.glsl"
+import FragmentShader from "./shaders/limestone_cave/f_limestone_cave.glsl"
 
 //const ui = {};
 
