@@ -6,8 +6,7 @@ import { App, UI } from "./app.js";
 import VertexShader from "./shaders/basic/vCircle.glsl"
 import FragmentShader from "./shaders/basic/fCircle.glsl"
 
-const ui = {
-};
+//const ui = {};
 
 export default class Sketch {
   constructor(canvas) {
