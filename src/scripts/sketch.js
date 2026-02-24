@@ -3,8 +3,8 @@ import * as Three from "three";
 
 import { App, UI } from "./app.js";
 
-import VertexShader from "./shaders/phantom_star/v_phantom_star.glsl"
-import FragmentShader from "./shaders/phantom_star/f_phantom_star.glsl"
+import VertexShader from "./shaders/ascend/v_ascend.glsl"
+import FragmentShader from "./shaders/ascend/f_ascend.glsl"
 
 //const ui = {};
 
@@ -12,19 +12,15 @@ export default class Sketch {
   constructor(canvas) {
     //this.gui = new UI(ui);
 
-    const mouse = new Three.Vector2(window.innerWidth / 2., window.innerHeight / 2.);
+    const mouse = new Three.Vector4(window.innerWidth / 2., window.innerHeight / 2., 1., 1.);
 
     const camera = new Three.OrthographicCamera(-1, 1, 1, -1, 0, 1)
     const app = new App(canvas, camera);
     const uniforms = {
-      general: {
-        value: {
-          elapsedTime: 0,
-          deltaTime: 0,
-          mouse: mouse,
-          resolution: new Three.Vector2(window.innerWidth, window.innerHeight),
-        }
-      },
+      iTime: { value: 0 },
+      iTimeDelta: { value: 0 },
+      iResolution: { value: new Three.Vector3(window.innerWidth, window.innerHeight, 1.) },
+      iMouse: { value: mouse },
     };
     const geometry = new Three.PlaneGeometry(2, 2);
     const material = new Three.ShaderMaterial({
@@ -64,10 +60,10 @@ export default class Sketch {
     });
 
     app.addUpdateCallback((deltaTime, elapsedTime) => {
-      uniforms.general.value.elapsedTime = elapsedTime;
-      uniforms.general.value.deltaTime = deltaTime;
-      uniforms.general.value.mouse.copy(mouse);
-      uniforms.general.value.resolution = new Three.Vector2(window.innerWidth, window.innerHeight);
+      uniforms.iTime.value = elapsedTime;
+      uniforms.iTimeDelta.value = deltaTime;
+      uniforms.iResolution.value = new Three.Vector2(window.innerWidth, window.innerHeight, 1.);
+      uniforms.iMouse.value.copy(mouse);
     });
 
     app.start();

@@ -1,12 +1,15 @@
-struct general_params {
-  float elapsedTime;
-  float deltaTime;
-  vec2 mouse;
-  vec2 resolution;
-};
-uniform general_params general;
+precision highp float;
+
+uniform float iTime;
+uniform float iTimeDelta;
+uniform vec3 iResolution;
+uniform vec4 iMouse;
+
 varying vec2 vUv;
 
+////////////////////////////////////////////////////////////////////////////////
+// https://www.shadertoy.com/view/33KBDm ///////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 //
 // Ascend by bµg
 // License: CC BY-NC-SA 4.0
@@ -18,13 +21,6 @@ varying vec2 vUv;
 #define N(x,y) abs(dot(sin(p/a*x), p-p+a*y))
 
 void mainImage(out vec4 O, vec2 P) {
-  // shadertoy uniform maps ////////////////////////////////////////////////////
-  float iTime = general.elapsedTime;
-  float iTimeDelta = general.deltaTime;
-  vec4 iMouse = vec4(general.mouse, 1., 1.);
-  vec3 iResolution = vec3(general.resolution, 1.);
-  //////////////////////////////////////////////////////////////////////////////
-  // ±!@#$%^&*()_+ /////////////////////////////////////////////////////////////
   vec3 o,p,q,
        R = iResolution;
 
@@ -54,10 +50,13 @@ void mainImage(out vec4 O, vec2 P) {
 
   O.rgb = tanh(o);
 }
+////////////////////////////////////////////////////////////////////////////////
+//// ±!@#$%^&*()_+ /////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 void main() {
   //mimic shadertoy fragCoord input vector
-  vec2 fragCoord = vUv * general.resolution.xy;
+  vec2 fragCoord = vUv * iResolution.xy;
   vec4 fragColor;
   mainImage(fragColor, fragCoord);
   gl_FragColor = vec4(fragColor.rgb, 1.);

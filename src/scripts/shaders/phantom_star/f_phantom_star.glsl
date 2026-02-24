@@ -1,14 +1,15 @@
 precision highp float;
 
-struct general_params {
-  float elapsedTime;
-  float deltaTime;
-  vec2 mouse;
-  vec2 resolution;
-};
-uniform general_params general;
+uniform float iTime;
+uniform float iTimeDelta;
+uniform vec3 iResolution;
+uniform vec4 iMouse;
+
 varying vec2 vUv;
 
+////////////////////////////////////////////////////////////////////////////////
+// https://www.shadertoy.com/view/33KBDm ///////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 mat2 rot(float a) {
   float c = cos(a), s = sin(a);
   return mat2(c,s,-s,c);
@@ -32,10 +33,10 @@ float box( vec3 p, vec3 b ) {
 float ifsBox(vec3 p) {
   for (int i=0; i<5; i++) {
     p = abs(p) - 1.0;
-    p.xy *= rot(general.elapsedTime*0.3);
-    p.xz *= rot(general.elapsedTime*0.1);
+    p.xy *= rot(iTime*0.3);
+    p.xz *= rot(iTime*0.1);
   }
-  p.xz *= rot(general.elapsedTime);
+  p.xz *= rot(iTime);
   return box(p, vec3(0.4,0.8,0.3));
 }
 
@@ -49,13 +50,6 @@ float map(vec3 p, vec3 cPos) {
 }
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
-  // shadertoy uniform maps ////////////////////////////////////////////////////
-  float iTime = general.elapsedTime;
-  float iTimeDelta = general.deltaTime;
-  vec4 iMouse = vec4(general.mouse, 1., 1.);
-  vec3 iResolution = vec3(general.resolution, 1.);
-  //////////////////////////////////////////////////////////////////////////////
-  // ±!@#$%^&*()_+ /////////////////////////////////////////////////////////////
   vec2 p = (fragCoord.xy * 2.0 - iResolution.xy) / min(iResolution.x, iResolution.y);
 
   vec3 cPos = vec3(0.0,0.0, -3.0 * iTime);
@@ -86,10 +80,13 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
   vec3 col = vec3(acc * 0.01, acc * 0.011 + acc2*0.002, acc * 0.012+ acc2*0.005);
   fragColor = vec4(col, 1.0 - t * 0.03);
 }
+////////////////////////////////////////////////////////////////////////////////
+//// ±!@#$%^&*()_+ /////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 void main() {
   //mimic shadertoy fragCoord input vector
-  vec2 fragCoord = vUv * general.resolution.xy;
+  vec2 fragCoord = vUv * iResolution.xy;
   vec4 fragColor;
   mainImage(fragColor, fragCoord);
   gl_FragColor = fragColor;
