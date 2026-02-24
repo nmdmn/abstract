@@ -4,4 +4,4 @@ node_modules
 yarn.lock
 yarn-error.log
 .parcel-cache
-.package-lock.json
+package-lock.json
