@@ -42,7 +42,7 @@ void mainImage(out vec4 o, vec2 u) {
     
     vec3 p = iResolution;
     u = (u+u-p.xy)/p.y;
-    if (abs(u.y) > .75) { o *=i; return; };
+    //if (abs(u.y) > .75) { o *=i; return; };
 
     vec3 D = normalize(vec3(u, 1));
     vec2 v = (.1*sin(iTime))+u + (u.yx*.8+.2-vec2(-1.,.1));
