@@ -29,5 +29,5 @@ void main() {
   vec2 fragCoord = vUv * iResolution.xy;
   vec4 fragColor;
   mainImage(fragColor, fragCoord);
-  gl_FragColor = fragColor;
+  gl_FragColor = vec4(fragColor.rgb, 1.);
 }
