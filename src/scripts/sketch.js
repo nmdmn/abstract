@@ -6,8 +6,7 @@ import { App, UI } from "./app.js";
 import VertexShader from "./shaders/ophanim/v_ophanim.glsl"
 import FragmentShader from "./shaders/ophanim/f_ophanim.glsl"
 
-const ui = {
-};
+//const ui = {};
 
 export default class Sketch {
   constructor(canvas) {
