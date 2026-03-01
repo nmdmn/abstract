@@ -5,3 +5,5 @@ yarn.lock
 yarn-error.log
 .parcel-cache
 package-lock.json
+capture/
+.DS_STORE

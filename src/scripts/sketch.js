@@ -11,6 +11,7 @@ import FragmentShader from "./shaders/ophanim/f_ophanim.glsl"
 export default class Sketch {
   constructor(canvas) {
     //this.gui = new UI(ui);
+    const mouse = new Three.Vector2(0., 0.);
 
     this.camera = new Three.OrthographicCamera(-1, 1, 1, -1, 0, 1)
     this.app = new App(canvas, this.camera);
@@ -19,7 +20,7 @@ export default class Sketch {
         value: {
           elapsedTime: 0,
           deltaTime: 0,
-          mouse: new Three.Vector2(0., 0.),
+          mouse: mouse,
           resolution: new Three.Vector2(window.innerWidth, window.innerHeight),
         }
       },
@@ -56,15 +57,30 @@ export default class Sketch {
       }
     });
 
-    const mouse = new Three.Vector2(0., 0.);
     window.addEventListener("mousemove", (event) => {
       mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
       mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
     });
 
+    const captureRate = 30;
+    var captureFrame = 0;
+    const isCapture = true;
+
     this.app.addUpdateCallback((deltaTime, elapsedTime) => {
-      this.uniforms.general.value.elapsedTime = elapsedTime;
-      this.uniforms.general.value.deltaTime = deltaTime;
+      if (isCapture) {
+        this.uniforms.general.value.elapsedTime = captureFrame / captureRate;
+        this.uniforms.general.value.deltaTime = 1. / captureRate;
+
+        var r = new XMLHttpRequest();
+        r.open("POST", "http://localhost:1337/" + captureFrame);
+        r.send(this.app.renderer.domElement.toDataURL().substr("data:image/png;base64,".length));
+
+        captureFrame++;
+      } else {
+        this.uniforms.general.value.elapsedTime = elapsedTime;
+        this.uniforms.general.value.deltaTime = deltaTime;
+      }
+
       this.uniforms.general.value.mouse.copy(mouse);
       this.uniforms.general.value.resolution = new Three.Vector2(window.innerWidth, window.innerHeight);
     });
