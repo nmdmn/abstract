@@ -1,5 +1,5 @@
 import * as Three from "three";
-import {createNoise3D} from "simplex-noise";
+import { createNoise3D } from "simplex-noise";
 import FragmentShader from "./shaders/grid/fGrid.glsl";
 import VertexShader from "./shaders/grid/vGrid.glsl";
 
@@ -23,28 +23,28 @@ export class Grid {
 
   initShader() {
     return new Three.ShaderMaterial({
-      side : Three.DoubleSide,
-      blending : Three.AdditiveBlending,
-      clipping : false,
-      fog : false,
-      wireframe : true,
-      transparent : true,
-      depthTest : false,
-      depthWrite : false,
-      extensions : {
-        derivates : "#extensions GL_OES_standard_derivates : enable",
+      side: Three.DoubleSide,
+      blending: Three.AdditiveBlending,
+      clipping: false,
+      fog: false,
+      wireframe: true,
+      transparent: true,
+      depthTest: false,
+      depthWrite: false,
+      extensions: {
+        derivates: "#extensions GL_OES_standard_derivates : enable",
         //fragDepth : true,
         //drawBuffers : true,
         //shaderTextureLOD : true,
       },
-      uniforms : {
-        time : {type : "f", value : this.app.clock.getElapsedTime()},
-        deltaTime : {type : "f", value : this.app.clock.deltaTime},
-        scroll : {type : "f", value : window.scrollY},
-        alpha : {type : "f", value : this.ui.alpha.value},
+      uniforms: {
+        time: { type: "f", value: this.app.timer.getElapsed() },
+        deltaTime: { type: "f", value: this.app.timer.getDelta() },
+        scroll: { type: "f", value: window.scrollY },
+        alpha: { type: "f", value: this.ui.alpha.value },
       },
-      vertexShader : VertexShader,
-      fragmentShader : FragmentShader,
+      vertexShader: VertexShader,
+      fragmentShader: FragmentShader,
     });
   }
 
@@ -58,10 +58,10 @@ export class Grid {
     for (let i = 0; i < posArrayLen; i += 3) {
       const scale = .3;
       const noise =
-          sampler(geometry.attributes.position.array[i] * scale,
-                geometry.attributes.position.array[i + 1] * scale,
-                geometry.attributes.position.array[i + 2] * scale);
-      noisePerVertex.set([ noise ], i / 3);
+        sampler(geometry.attributes.position.array[i] * scale,
+          geometry.attributes.position.array[i + 1] * scale,
+          geometry.attributes.position.array[i + 2] * scale);
+      noisePerVertex.set([noise], i / 3);
     }
 
     geometry.setAttribute("noise", new Three.BufferAttribute(noisePerVertex, 1));

@@ -1,8 +1,8 @@
 import * as Three from "three";
-import {createNoise3D} from "simplex-noise";
+import { createNoise3D } from "simplex-noise";
 import FragmentShader from "./shaders/box/fBox.glsl";
 import VertexShader from "./shaders/box/vBox.glsl";
-import {BufferObject} from "./app.js"
+import { BufferObject } from "./app.js"
 
 export class Box {
   constructor(app, ui) {
@@ -26,28 +26,28 @@ export class Box {
 
   initShader() {
     return new Three.ShaderMaterial({
-      side : Three.DoubleSide,
-      blending : Three.AdditiveBlending,
-      clipping : false,
-      fog : false,
-      wireframe : false,
-      transparent : true,
-      depthTest : false,
-      depthWrite : false,
-      extensions : {
-        derivates : "#extensions GL_OES_standard_derivates : enable",
+      side: Three.DoubleSide,
+      blending: Three.AdditiveBlending,
+      clipping: false,
+      fog: false,
+      wireframe: false,
+      transparent: true,
+      depthTest: false,
+      depthWrite: false,
+      extensions: {
+        derivates: "#extensions GL_OES_standard_derivates : enable",
         //fragDepth : false,
         //drawBuffers : true,
         //haderTextureLOD : false,
       },
-      uniforms : {
-        time : {type : "f", value : this.app.clock.getElapsedTime()},
-        deltaTime : {type : "f", value : this.app.clock.deltaTime},
-        scroll : {type : "f", value : window.scrollY},
-        alpha : {type : "f", value : this.ui.alpha.value},
+      uniforms: {
+        time: { type: "f", value: this.app.timer.getElapsed() },
+        deltaTime: { type: "f", value: this.app.timer.getDelta() },
+        scroll: { type: "f", value: window.scrollY },
+        alpha: { type: "f", value: this.ui.alpha.value },
       },
-      vertexShader : VertexShader,
-      fragmentShader : FragmentShader,
+      vertexShader: VertexShader,
+      fragmentShader: FragmentShader,
     });
   }
 
@@ -65,8 +65,8 @@ export class Box {
           const x = (nX + .5) * unit - size / 2;
           const y = (nY + .5) * unit - size / 2;
           const z = (nZ + .5) * unit - size / 2;
-          positionVBO.add([ x, y, z ]);
-          noiseVBO.add([ sampler(x * offset, y * offset, z * offset) ]);
+          positionVBO.add([x, y, z]);
+          noiseVBO.add([sampler(x * offset, y * offset, z * offset)]);
         }
       }
     }
