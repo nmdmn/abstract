@@ -2,7 +2,7 @@ import * as Dat from "dat.gui";
 import * as Three from "three";
 
 export class App {
-  constructor(canvas, camera) {
+  constructor(canvas, camera, captureRate) {
     window.addEventListener('resize', () => { this.onResize(); }, false);
     window.addEventListener('keydown', event => { this.onKey(event); });
 
@@ -19,6 +19,10 @@ export class App {
     this.resizeCallbacks = [];
     this.keydownCallbacks = [];
     this.updateCallbacks = [];
+
+    this.captureRate = captureRate;
+    this.captureFrame = 0;
+
   }
 
   addResizeCallback(resizeCallback) { this.resizeCallbacks.push(resizeCallback); }
@@ -44,14 +48,26 @@ export class App {
 
   tick() {
     this.timer.update();
-    const deltaTime = this.timer.getDelta();
-    const elapsedTime = this.timer.getElapsed();
+    let deltaTime = this.timer.getDelta();
+    let elapsedTime = this.timer.getElapsed();
+
+    if (this.captureRate != 0) {
+      deltaTime = 1. / this.captureRate;
+      elapsedTime = this.captureFrame / this.captureRate;
+    }
 
     for (const callback in this.updateCallbacks) {
       this.updateCallbacks[callback](deltaTime, elapsedTime);
     }
 
     this.renderer.render(this.scene, this.camera);
+    if (this.captureRate != 0) {
+      var r = new XMLHttpRequest();
+      r.open("POST", "http://localhost:2345/" + this.captureFrame, true);
+      r.send(this.renderer.domElement.toDataURL());
+
+      this.captureFrame++;
+    }
     window.requestAnimationFrame(this.tick.bind(this));
   }
 

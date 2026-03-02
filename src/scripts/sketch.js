@@ -14,7 +14,7 @@ export default class Sketch {
     const mouse = new Three.Vector2(0., 0.);
 
     this.camera = new Three.OrthographicCamera(-1, 1, 1, -1, 0, 1)
-    this.app = new App(canvas, this.camera);
+    this.app = new App(canvas, this.camera, 0);
     this.uniforms = {
       general: {
         value: {
@@ -45,7 +45,6 @@ export default class Sketch {
       vertexShader: VertexShader,
       fragmentShader: FragmentShader,
     });
-
     this.mesh = new Three.Mesh(geometry, material);
     this.app.scene.add(this.mesh);
 
@@ -62,25 +61,9 @@ export default class Sketch {
       mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
     });
 
-    const captureRate = 30;
-    var captureFrame = 0;
-    const isCapture = true;
-
     this.app.addUpdateCallback((deltaTime, elapsedTime) => {
-      if (isCapture) {
-        this.uniforms.general.value.elapsedTime = captureFrame / captureRate;
-        this.uniforms.general.value.deltaTime = 1. / captureRate;
-
-        var r = new XMLHttpRequest();
-        r.open("POST", "http://localhost:1337/" + captureFrame);
-        r.send(this.app.renderer.domElement.toDataURL().substr("data:image/png;base64,".length));
-
-        captureFrame++;
-      } else {
-        this.uniforms.general.value.elapsedTime = elapsedTime;
-        this.uniforms.general.value.deltaTime = deltaTime;
-      }
-
+      this.uniforms.general.value.elapsedTime = elapsedTime;
+      this.uniforms.general.value.deltaTime = deltaTime;
       this.uniforms.general.value.mouse.copy(mouse);
       this.uniforms.general.value.resolution = new Three.Vector2(window.innerWidth, window.innerHeight);
     });
