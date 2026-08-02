@@ -42,7 +42,7 @@ export default class Sketch {
         drawBuffers: false,
         haderTextureLOD: false,
       },
-      uniforms: this.uniforms,
+      uniforms: uniforms,
       vertexShader: getShader(shaderName, "v"),
       fragmentShader: getShader(shaderName, "f"),
     });
