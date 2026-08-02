@@ -3,8 +3,14 @@ import * as Three from "three";
 
 import { App, UI } from "./app.js";
 
-import VertexShader from "./shaders/ophanim/v_ophanim.glsl"
-import FragmentShader from "./shaders/ophanim/f_ophanim.glsl"
+//import VertexShader from "./shaders/ophanim/v_ophanim.glsl"
+//import FragmentShader from "./shaders/ophanim/f_ophanim.glsl"
+
+import * as Shaders from "./shaders/*/{v,f}_*.glsl";
+
+function getShader(name, type) {
+  return Shaders[name][type][name];
+}
 
 //const ui = {};
 
@@ -26,6 +32,7 @@ export default class Sketch {
       },
     };
     const geometry = new Three.PlaneGeometry(2, 2);
+    const shaderName = "ophanim";
     const material = new Three.ShaderMaterial({
       side: Three.FrontSide,
       blending: Three.AdditiveBlending,
@@ -42,8 +49,8 @@ export default class Sketch {
         haderTextureLOD: false,
       },
       uniforms: this.uniforms,
-      vertexShader: VertexShader,
-      fragmentShader: FragmentShader,
+      vertexShader: getShader(shaderName, "v"),
+      fragmentShader: getShader(shaderName, "f"),
     });
     this.mesh = new Three.Mesh(geometry, material);
     this.app.scene.add(this.mesh);
