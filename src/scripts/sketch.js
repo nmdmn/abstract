@@ -3,11 +3,13 @@ import * as Three from "three";
 
 import { App, UI } from "./app.js";
 
-import VertexShader from "./shaders/basic/v_basic.glsl"
-import FragmentShader from "./shaders/basic/f_basic.glsl"
+import * as Shaders from "./shaders/*/{v,f}_*.glsl";
 
-const ui = {
-};
+function getShader(name, type) {
+  return Shaders[name][type][name];
+}
+
+//const ui = {};
 
 export default class Sketch {
   constructor(canvas) {
@@ -15,9 +17,9 @@ export default class Sketch {
 
     const mouse = new Three.Vector4(0., 0., -1., 0.);
 
-    this.camera = new Three.OrthographicCamera(-1, 1, 1, -1, 0, 1)
-    this.app = new App(canvas, this.camera);
-    this.uniforms = {
+    const camera = new Three.OrthographicCamera(-1, 1, 1, -1, 0, 1)
+    const app = new App(canvas, camera);
+    const uniforms = {
       general: {
         value: {
           elapsedTime: 0,
@@ -28,6 +30,7 @@ export default class Sketch {
       },
     };
     const geometry = new Three.PlaneGeometry(2, 2);
+    const shaderName = "basic";
     const material = new Three.ShaderMaterial({
       side: Three.FrontSide,
       blending: Three.AdditiveBlending,
@@ -43,15 +46,15 @@ export default class Sketch {
         drawBuffers: true,
         haderTextureLOD: true,
       },
-      uniforms: this.uniforms,
-      vertexShader: VertexShader,
-      fragmentShader: FragmentShader,
+      uniforms: uniforms,
+      vertexShader: getShader(shaderName, "v"),
+      fragmentShader: getShader(shaderName, "f"),
     });
 
-    this.mesh = new Three.Mesh(geometry, material);
-    this.app.scene.add(this.mesh);
+    const mesh = new Three.Mesh(geometry, material);
+    app.scene.add(mesh);
 
-    this.app.addKeydownCallbacks((event) => {
+    app.addKeydownCallbacks((event) => {
       switch (event.key) {
         case "Escape":
           Dat.GUI.toggleHide();
@@ -68,13 +71,13 @@ export default class Sketch {
       mouse.z = -1.;
     });
 
-    this.app.addUpdateCallback((deltaTime, elapsedTime) => {
-      this.uniforms.general.value.elapsedTime = elapsedTime;
-      this.uniforms.general.value.deltaTime = deltaTime;
-      this.uniforms.general.value.mouse.copy(mouse);
-      this.uniforms.general.value.resolution = new Three.Vector2(window.innerWidth, window.innerHeight);
+    app.addUpdateCallback((deltaTime, elapsedTime) => {
+      uniforms.general.value.elapsedTime = elapsedTime;
+      uniforms.general.value.deltaTime = deltaTime;
+      uniforms.general.value.mouse.copy(mouse);
+      uniforms.general.value.resolution = new Three.Vector2(window.innerWidth, window.innerHeight);
     });
 
-    this.app.start();
+    app.start();
   }
 }
