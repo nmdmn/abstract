@@ -19,9 +19,9 @@ export default class Sketch {
     //this.gui = new UI(ui);
     const mouse = new Three.Vector2(0., 0.);
 
-    this.camera = new Three.OrthographicCamera(-1, 1, 1, -1, 0, 1)
-    this.app = new App(canvas, this.camera, 0);
-    this.uniforms = {
+    const camera = new Three.OrthographicCamera(-1, 1, 1, -1, 0, 1)
+    const app = new App(canvas, camera, 0);
+    const uniforms = {
       general: {
         value: {
           elapsedTime: 0,
@@ -48,14 +48,14 @@ export default class Sketch {
         drawBuffers: false,
         haderTextureLOD: false,
       },
-      uniforms: this.uniforms,
+      uniforms: uniforms,
       vertexShader: getShader(shaderName, "v"),
       fragmentShader: getShader(shaderName, "f"),
     });
-    this.mesh = new Three.Mesh(geometry, material);
-    this.app.scene.add(this.mesh);
+    const mesh = new Three.Mesh(geometry, material);
+    app.scene.add(mesh);
 
-    this.app.addKeydownCallbacks((event) => {
+    app.addKeydownCallbacks((event) => {
       switch (event.key) {
         case "Escape":
           Dat.GUI.toggleHide();
@@ -68,13 +68,13 @@ export default class Sketch {
       mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
     });
 
-    this.app.addUpdateCallback((deltaTime, elapsedTime) => {
-      this.uniforms.general.value.elapsedTime = elapsedTime;
-      this.uniforms.general.value.deltaTime = deltaTime;
-      this.uniforms.general.value.mouse.copy(mouse);
-      this.uniforms.general.value.resolution = new Three.Vector2(window.innerWidth, window.innerHeight);
+    app.addUpdateCallback((deltaTime, elapsedTime) => {
+      uniforms.general.value.elapsedTime = elapsedTime;
+      uniforms.general.value.deltaTime = deltaTime;
+      uniforms.general.value.mouse.copy(mouse);
+      uniforms.general.value.resolution = new Three.Vector2(window.innerWidth, window.innerHeight);
     });
 
-    this.app.start();
+    app.start();
   }
 }
