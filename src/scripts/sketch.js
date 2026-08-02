@@ -3,8 +3,11 @@ import * as Three from "three";
 
 import { App, UI } from "./app.js";
 
-import VertexShader from "./shaders/basic/v_basic.glsl"
-import FragmentShader from "./shaders/basic/f_basic.glsl"
+import * as Shaders from "./shaders/*/{v,f}_*.glsl";
+
+function getShader(name, type) {
+  return Shaders[name][type][name];
+}
 
 //const ui = {};
 
@@ -23,6 +26,7 @@ export default class Sketch {
       iMouse: { value: mouse },
     };
     const geometry = new Three.PlaneGeometry(2, 2);
+    const shaderName = "basic";
     const material = new Three.ShaderMaterial({
       side: Three.FrontSide,
       blending: Three.AdditiveBlending,
@@ -38,9 +42,9 @@ export default class Sketch {
         drawBuffers: false,
         haderTextureLOD: false,
       },
-      uniforms: uniforms,
-      vertexShader: VertexShader,
-      fragmentShader: FragmentShader,
+      uniforms: this.uniforms,
+      vertexShader: getShader(shaderName, "v"),
+      fragmentShader: getShader(shaderName, "f"),
     });
 
     const mesh = new Three.Mesh(geometry, material);

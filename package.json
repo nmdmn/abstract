@@ -12,7 +12,8 @@
     "clearup": "rm -rf node_modules rel dist .parcel-cache"
   },
   "devDependencies": {
-    "@parcel/transformer-glsl": "^2.14.4",
+    "@parcel/resolver-glob": "^2.16.4",
+    "@parcel/transformer-glsl": "^2.16.4",
     "@parcel/transformer-sass": "^2.14.4",
     "baseline-browser-mapping": "^2.10.0",
     "buffer": "^5.5.0||^6.0.0",
