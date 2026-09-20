@@ -14,25 +14,25 @@ const ui = {
     step: .01,
   },
   exposure: {
-    value: .8,
+    value: .9,
     min: .1,
     max: 2.,
     step: .01,
   },
   threshold: {
-    value: .6,
+    value: 1.,
     min: .0,
     max: 1.,
     step: .01,
   },
   strength: {
-    value: .6,
+    value: .5,
     min: .0,
     max: 3.,
     step: .1,
   },
   radius: {
-    value: .9,
+    value: 1.,
     min: .0,
     max: 1.,
     step: .01,
@@ -45,7 +45,7 @@ export default class Sketch {
 
     this.camera = new Three.PerspectiveCamera(33, window.innerWidth / window.innerHeight, .1, 1000.);
     this.camera.lookAt(new Vector3(0, 0, 0));
-    this.camera.position.copy(new Vector3(0, 0, 99));
+    this.camera.position.copy(new Vector3(0, 0, 111));
     this.app = new App(canvas, this.camera);
 
     this.box = new Box(this.app, ui);
