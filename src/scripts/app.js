@@ -16,8 +16,9 @@ export class App {
     this.camera = camera;
     this.scene = new Three.Scene();
     this.renderer = new Three.WebGLRenderer({
-      canvas : this.canvas,
-      antialias : true,
+      canvas: this.canvas,
+      antialias: true,
+      powerPreference: "high-performance"
     });
     this.blurRenderTarget = new Three.WebGLRenderTarget(window.innerWidth, window.innerHeight);
     this.blurRenderTarget.toneMapping = Three.ACESFilmicToneMapping;
