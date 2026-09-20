@@ -12,6 +12,7 @@ export class App {
     this.renderer = new Three.WebGLRenderer({
       canvas: this.canvas,
       antialias: true,
+      powerPreference: "high-performance"
     });
     this.onResize();
 
