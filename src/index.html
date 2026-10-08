@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#09090e" />
+    <meta name="description" content="An ongoing experiment in form, light, and the space between. A scroll-driven digital sculpture." />
+    <title>Abstract — Between form &amp; feeling</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="styles/main.scss" />
+    <script type="module" src="scripts/main.js"></script>
+  </head>
+  <body>
+    <canvas aria-hidden="true"></canvas>
+    <div class="static-art" aria-hidden="true"><div></div></div>
+    <a class="skip-link" href="#section-0">Skip to experience</a>
+
+    <header class="header">
+      <a class="wordmark" href="#section-0" aria-label="Abstract, back to the beginning">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2v28M2 16h28M6 6l20 20M6 26 26 6" /></svg>
+        abstract<span class="wordmark-dot">®</span>
+      </a>
+      <nav class="chapter-nav" aria-label="Chapters">
+        <a href="#section-0" aria-current="step">Emergence</a>
+        <a href="#section-1">Resonance</a>
+        <a href="#section-2">Dissolution</a>
+        <a href="#section-3">Stillness</a>
+      </nav>
+      <button class="motion-toggle" type="button" aria-pressed="false" title="Pause ambient motion">
+        <span class="status-dot" aria-hidden="true"></span><span data-motion-label>Motion on</span>
+      </button>
+    </header>
+
+    <main id="experience" tabindex="0" aria-label="Scroll through the four states of the sculpture">
+      <section id="section-0" class="chapter emergence" aria-labelledby="title-0" tabindex="-1">
+        <div class="chapter-content">
+          <p class="eyebrow" data-reveal><span class="tiny-cross">+</span> An experiment in digital matter</p>
+          <h1 id="title-0" data-reveal>Between<br />form &amp; <em>feeling.</em></h1>
+          <div class="intro-bottom" data-reveal>
+            <p class="body-copy">Not quite an object.<br />Not quite a thought.<br />Something in between.</p>
+            <a class="text-link" href="#section-1">Scroll to discover <span aria-hidden="true">↓</span></a>
+          </div>
+        </div>
+        <aside class="specimen glass" aria-label="About this artwork">
+          <span class="specimen-symbol" aria-hidden="true">◌</span>
+          <div><p class="micro">Live, not looped</p><p>A study in becoming.</p></div>
+          <span class="specimen-coordinate micro">001 / ∞</span>
+        </aside>
+        <span class="section-watermark" aria-hidden="true">I</span>
+      </section>
+
+      <section id="section-1" class="chapter resonance" aria-labelledby="title-1" tabindex="-1">
+        <div class="chapter-content">
+          <p class="eyebrow" data-reveal>01 — 02 <span class="eyebrow-line"></span> Resonance</p>
+          <h2 id="title-1" data-reveal>Everything<br />has a <em>rhythm.</em></h2>
+          <p class="body-copy" data-reveal>A quiet pulse. A passing wave.<br />The smallest movement changes the whole.</p>
+        </div>
+        <div class="resonance-note" data-reveal>
+          <span class="wave-mark" aria-hidden="true">∿</span>
+          <p class="micro">Nothing exists in isolation.</p>
+          <p class="body-copy">Scroll, and the form follows.<br />Pause, and it breathes.</p>
+        </div>
+        <span class="section-watermark" aria-hidden="true">II</span>
+      </section>
+
+      <section id="section-2" class="chapter dissolution" aria-labelledby="title-2" tabindex="-1">
+        <div class="chapter-content">
+          <p class="eyebrow" data-reveal>02 — 03 <span class="eyebrow-line"></span> Dissolution</p>
+          <h2 id="title-2" data-reveal>Let go<br />of the <em>edges.</em></h2>
+          <p class="body-copy" data-reveal>What looks solid is only a gathering.<br />A thousand small things<br />agreeing, for a moment, to be one.</p>
+          <div class="detail-rule" data-reveal>
+            <span class="micro">Order is temporary.</span>
+            <span class="micro">Possibility is not.</span>
+          </div>
+        </div>
+        <span class="section-watermark" aria-hidden="true">III</span>
+      </section>
+
+      <section id="section-3" class="chapter stillness" aria-labelledby="title-3" tabindex="-1">
+        <div class="chapter-content">
+          <p class="eyebrow" data-reveal>03 — 04 <span class="eyebrow-line"></span> Stillness</p>
+          <h2 id="title-3" data-reveal>Less form.<br /><em>More feeling.</em></h2>
+          <p class="body-copy" data-reveal>And in the space that remains,<br />something begins again.</p>
+          <a class="text-link return-link" href="#section-0" data-reveal>Back to the beginning <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="colophon" data-reveal>
+          <span class="micro">Made of light, code &amp; curiosity.</span>
+          <span class="micro">Abstract — Vol. 001</span>
+        </div>
+        <span class="section-watermark" aria-hidden="true">IV</span>
+      </section>
+    </main>
+
+    <nav class="chapter-rail" aria-label="Chapter index">
+      <a href="#section-0" aria-label="01 Emergence" aria-current="step"><span>01</span><i></i></a>
+      <a href="#section-1" aria-label="02 Resonance"><span>02</span><i></i></a>
+      <a href="#section-2" aria-label="03 Dissolution"><span>03</span><i></i></a>
+      <a href="#section-3" aria-label="04 Stillness"><span>04</span><i></i></a>
+    </nav>
+    <footer class="status-bar" aria-label="Experience progress">
+      <div class="current-chapter"><span class="status-dot" aria-hidden="true"></span><span data-chapter-label>01 / Emergence</span></div>
+      <span class="status-center">An ongoing experiment</span>
+      <span class="status-end">Drag reality a little <span aria-hidden="true">↕</span></span>
+      <div class="journey-line" aria-hidden="true"></div>
+    </footer>
+  </body>
+</html>

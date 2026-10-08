@@ -1,0 +1,8 @@
+.DS_Store
+dist
+rel
+node_modules
+yarn.lock
+yarn-error.log
+.parcel-cache
+package-lock.json
